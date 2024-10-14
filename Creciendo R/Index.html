@@ -32,7 +32,7 @@
         }
 
         .search-container {
-            display: flex;
+            display: flex;  /*Flexbox*/
             align-items: center;
         }
 
@@ -73,18 +73,6 @@
             justify-content: flex-start; /* Alinear las opciones a la izquierda */
             gap: 20px; /* Espacio entre las opciones */
             flex-grow: 1; /* Permite que el contenedor ocupe espacio adicional */
-            margin-left: 200px; /* Mueve las secciones a la derecha */
-        }
-
-        .grado, .ayuda, .cuentos {
-            color: #333; /* Color por defecto */
-            font-size: 1.5rem; /* Tamaño de fuente */
-            cursor: pointer; /* Cambiar el cursor al pasar el mouse */
-            position: relative; /* Para posicionar el menú desplegable */
-        }
-
-        .grado:hover, .ayuda:hover, .cuentos:hover {
-            color: skyblue; /* Color al pasar el mouse */
         }
 
         .dropdown {
@@ -157,12 +145,12 @@
 </head>
 <body>
     <header>
-        <img src="Logos/logo.png" alt="Logo" class="logo">
+        <img src="logo.png" alt="Logo" class="logo">
         <div class="search-container">
             <input type="text" class="search-input" placeholder="Buscar...">
             <button class="search-button">Buscar</button>
         </div>
-        <div class="options-container" style="position: absolute; left: 550px;"> <!-- Mueve hacia la izquierda -->
+        <div class="options-container" style="position: absolute; left: 400px;"> <!-- Mueve hacia la izquierda -->
             <div class="grado">
                 GRADOS ⭣
                 <div class="dropdown">
@@ -213,7 +201,7 @@
     </div>    
 
     <footer>
-        <p>© 2025 Kidsity. Todos los derechos reservados.</p>
+        <p>© 2025 CreciendoJuntos. Todos los derechos reservados.</p>
     </footer>
 </body>
 </html>
