@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minijuegos Educativos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0099A8;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #ffffff;
+            padding: 10px;
+            text-align: center;
+        }
+        .header img {
+            width: 150px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .game-card {
+            background-color: white;
+            border-radius: 10px;
+            margin: 15px;
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+        }
+        .game-card img {
+            width: 100px;
+            height: 100px;
+        }
+        .game-card h3 {
+            color: #333;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .play-button {
+            background-color: #FF6666;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .play-button:hover {
+            background-color: #FF3333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="LogosF/logo.png" alt="Logo Minijuegos">
+    </div>
+
+    <div class="container">
+        <div class="game-card">
+            <img src="LogosF/Figuras.png" alt="Figuras">
+            <h3>Figuras</h3>
+            <button class="play-button">Jugar</button>
+        </div>
+
+        <div class="game-card">
+            <img src="LogosF/Colores.png" alt="Colores">
+            <h3>Colores</h3>
+            <button class="play-button">Jugar</button>
+        </div>
+
+        <div class="game-card">
+            <img src="LogosF/Letras.png" alt="Letras">
+            <h3>Letras</h3>
+            <button class="play-button">Jugar</button>
+        </div>
+    </div>
+
+</body>
+</html>
