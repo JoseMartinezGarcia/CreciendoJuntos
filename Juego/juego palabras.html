@@ -39,22 +39,16 @@
         let score = 0;
         let hintImage;
         let startTime;
+        let startText;
 
         function preload() {
-            // Cargar fondo, imágenes y audios de las palabras
-            this.load.image('background', 'assets/fondonum.jpg'); 
+            // Cargar fondo y las imágenes de las palabras
+            this.load.image('background', 'assets/fondonum.jpg');
             this.load.image('gato', 'assets/letras desordenadas/img/gato.jpg');
             this.load.image('perro', 'assets/letras desordenadas/img/perro.jpg');
             this.load.image('casa', 'assets/letras desordenadas/img/casa.jpg');
             this.load.image('sol', 'assets/letras desordenadas/img/sol.jpeg');
             this.load.image('luna', 'assets/letras desordenadas/img/luna.jpg');
-            
-            // Cargar audios de las palabras
-            this.load.audio('gatoAudio', 'assets/letras desordenadas/aud/gato.mp3');
-            this.load.audio('perroAudio', 'assets/letras desordenadas/aud/perro.mp3');
-            this.load.audio('casaAudio', 'assets/letras desordenadas/aud/casa.mp3');
-            this.load.audio('solAudio', 'assets/letras desordenadas/aud/sol.mp3');
-            this.load.audio('lunaAudio', 'assets/letras desordenadas/aud/luna.mp3');
         }
 
         function create() {
@@ -62,26 +56,33 @@
             const bg = this.add.image(0, 0, 'background').setOrigin(0, 0);
             bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
 
+            // Texto de inicio
+            startText = this.add.text(400, 300, 'Haz clic para empezar', { font: '48px Arial', fill: '#ffffff' }).setOrigin(0.5);
+            this.input.once('pointerdown', () => {
+                startText.setVisible(false); // Ocultar el texto de inicio al hacer clic
+                startGame(this);
+            });
+        }
+
+        function startGame(scene) {
             // Aleatorizar el orden de las palabras en cada partida
             shuffledWords = Phaser.Utils.Array.Shuffle([...words]);
 
             // Texto inicial para indicar el puntaje
-            this.scoreText = this.add.text(10, 10, 'Puntuación: 0', { font: '32px Arial', fill: '#000' });
+            scene.scoreText = scene.add.text(10, 10, 'Puntuación: 0', { font: '32px Arial', fill: '#000' });
 
             // Crear un espacio para la imagen de la pista y centrarla
-            hintImage = this.add.image(400, 150, shuffledWords[currentWordIndex].toLowerCase()).setVisible(true);
+            hintImage = scene.add.image(400, 150, shuffledWords[currentWordIndex].toLowerCase()).setVisible(true);
             hintImage.setDisplaySize(200, 200);
 
             // Texto para mostrar letras seleccionadas, ubicado en la parte inferior
-            this.selectedWordText = this.add.text(400, 500, '', { font: '64px Comic Sans MS', fill: '#ffffff' }).setOrigin(0.5);
+            scene.selectedWordText = scene.add.text(400, 500, '', { font: '64px Comic Sans MS', fill: '#ffffff' }).setOrigin(0.5);
 
             // Mostrar la primera palabra desordenada
-            loadNextWord(this);
+            loadNextWord(scene);
         }
 
-        function update() {
-            // No se necesita actualizar continuamente en este juego
-        }
+        function update() {}
 
         function loadNextWord(scene) {
             // Limpiar letras previas
@@ -92,14 +93,10 @@
             // Reiniciar el texto de la palabra seleccionada
             scene.selectedWordText.setText('');
 
-            // Cambiar la imagen y reproducir el audio para la palabra actual
+            // Cambiar la imagen para la palabra actual
             let word = shuffledWords[currentWordIndex];
             hintImage.setTexture(word.toLowerCase());
             hintImage.setDisplaySize(200, 200);
-
-            // Reproducir el audio de la palabra actual
-            let audioKey = word.toLowerCase() + 'Audio';
-            scene.sound.play(audioKey);
 
             // Registrar el tiempo de inicio de esta palabra
             startTime = scene.time.now;
@@ -115,6 +112,7 @@
                 let letterText = scene.add.text(startX + i * 80, 300, letter, { font: '64px Comic Sans MS', fill: '#ffffff' });
                 letterText.setInteractive();
 
+                // Agregar cada letra como un objeto único para poder seleccionar letras repetidas
                 letterText.letterIndex = i;
                 letterText.on('pointerdown', () => selectLetter(letterText, scene));
 
@@ -137,10 +135,8 @@
         }
 
         function checkWord(scene) {
-            // Convertir las letras seleccionadas a una palabra
             let selectedWord = selectedLetters.map(letter => letter.text).join('');
 
-            // Comprobar si coincide con la palabra correcta
             if (selectedWord === shuffledWords[currentWordIndex]) {
                 const timeTaken = (scene.time.now - startTime) / 1000;
                 let wordScore = Math.max(100 - Math.floor(timeTaken * 10), 10);
