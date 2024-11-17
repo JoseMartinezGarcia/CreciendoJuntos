@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Gran Tesoro de la Aldea</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #storyContainer {
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #readButton {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #readButton:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="storyContainer">
+        <h1>El Gran Tesoro de la Aldea</h1>
+        <p>Había una vez una pequeña aldea rodeada de montañas y ríos cristalinos, donde vivían personas de todas las edades, colores y talentos. En el centro de la aldea, había un árbol muy especial: el Árbol de los Corazones, que brillaba con mil colores. Este árbol, según la leyenda, daba frutos mágicos que fortalecían la comunidad, pero solo florecía si las personas vivían en armonía.</p>
+        <p>Un día, el Árbol de los Corazones empezó a perder su luz. Preocupados, los aldeanos decidieron reunirse para descubrir cómo devolverle su brillo. Entre ellos estaba Lia, una niña que siempre estaba dispuesta a ayudar, y Samu, un niño tímido que prefería observar desde lejos.</p>
+        <p>El sabio anciano de la aldea les explicó: "El árbol se debilita cuando la comunidad se olvida de los valores que nos unen: el respeto, la empatía, la inclusión y la cooperación. Si queremos salvarlo, cada uno de nosotros debe trabajar juntos y aprender a valorarse a sí mismo y a los demás".</p>
+        <p>Lia propuso que cada aldeano compartiera algo especial que pudiera aportar a la comunidad. Ella organizó un festival donde todos mostrarían sus habilidades. Los músicos tocarían melodías para levantar los ánimos, los cocineros compartirían comidas deliciosas, y aquellos con manos hábiles enseñarían a los demás a crear cosas útiles.</p>
+        <p>Samu, al principio, se sintió inseguro. “¿Qué podría hacer yo? No soy bueno en nada”, pensó. Pero entonces, Lia lo encontró sentado bajo el Árbol de los Corazones y le sonrió. “Todos tenemos algo que ofrecer, Samu. ¿Qué te hace feliz?” Samu, con un poco de duda, confesó que le encantaba dibujar.</p>
+        <p>Con apoyo de Lia y otros niños, Samu pintó un gran mural que contaba la historia de la aldea, sus costumbres y la belleza de su diversidad. Los aldeanos admiraron el mural y reconocieron su importancia: cada persona, con sus talentos y emociones, construía la identidad de la comunidad. Gracias al mural de Samu, la aldea recordaba cómo todos, sin importar sus diferencias, eran valiosos.</p>
+        <p>El día del festival, la alegría y la unión hicieron que el Árbol de los Corazones recuperara su luz y floreciera como nunca antes. Cada fruto que caía recordaba una promesa de ser mejores, apoyarse, respetarse y construir juntos un lugar donde todos tuvieran un espacio.</p>
+        <p>Samu entendió que formar parte de una comunidad significaba aceptar y compartir lo que eres, ayudando a otros a hacer lo mismo. Así, junto a Lia y todos los demás, prometió cuidar el Árbol de los Corazones y los valores que lo hacían brillar.</p>
+        <p><strong>Fin.</strong></p>
+        <button id="readButton">Leer en voz alta</button>
+    </div>
+
+    <script>
+        const readButton = document.getElementById('readButton');
+        const storyText = document.getElementById('storyContainer').innerText;
+    
+        readButton.addEventListener('click', () => {
+            const synth = window.speechSynthesis;
+            const utterThis = new SpeechSynthesisUtterance(storyText);
+    
+            // Obtener la lista de voces disponibles
+            let voices = synth.getVoices();
+    
+            // Filtrar para seleccionar una voz en español
+            let spanishVoice = voices.find(voice => voice.lang.startsWith('es'));
+    
+            // Si hay una voz en español, usarla
+            if (spanishVoice) {
+                utterThis.voice = spanishVoice;
+            }
+    
+            synth.speak(utterThis);
+        });
+    
+        // Este código asegura que las voces estén cargadas antes de usar speechSynthesis
+        window.speechSynthesis.onvoiceschanged = function() {
+            voices = window.speechSynthesis.getVoices();
+        };
+    </script>
+</body>
+</html>

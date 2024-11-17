@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La promesa de Estrella</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #storyContainer {
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #readButton {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #readButton:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="storyContainer">
+        <h1>El Misterio del Jardín Encantado</h1>
+        <p>Había una vez en un pequeño pueblo de México un grupo de amigos: Ana, Luis y Pepe. Los tres adoraban explorar y aprender cosas nuevas, especialmente sobre la naturaleza. Un día, mientras jugaban cerca del viejo jardín del abuelo de Ana, notaron algo extraño. En una parte del jardín, las plantas crecían más rápido, los colores de las flores eran más brillantes y, al anochecer, algunos insectos parecían brillar como luciérnagas.</p>
+        <p>“¿Qué está pasando aquí?” se preguntó Ana con asombro. Decididos a resolver el misterio, los tres amigos se adentraron en el jardín con sus lupas, cuadernos y un frasco para recolectar muestras. El abuelo de Ana, quien amaba la ciencia, sonrió al ver su entusiasmo y les prestó su viejo libro de ciencias naturales. “El conocimiento y la observación son tus mejores aliados”, les dijo.</p>
+        <p>Los niños comenzaron a observar todo lo que sucedía en el jardín. Pronto notaron que había un pequeño arroyo subterráneo que mantenía el suelo húmedo y fértil. Luis, que siempre amaba los experimentos, tomó una muestra de agua. Con la ayuda del abuelo, descubrieron que el agua contenía minerales que ayudaban a las plantas a crecer fuertes. “¡El agua tiene nutrientes que alimentan las raíces!” exclamó Luis.</p>
+        <p>Mientras tanto, Ana observó las flores con atención. Notó que las abejas visitaban esas flores más que otras en el jardín. “Las abejas están polinizando las flores”, dijo emocionada. Recordó que en clase aprendieron que la polinización ayuda a que las plantas se reproduzcan y que sin las abejas muchas plantas no podrían dar frutos. “¡Las abejas son las heroínas del jardín!” concluyó.</p>
+        <p>Pepe, que amaba los animales, se concentró en los insectos brillantes. Con la ayuda del abuelo, descubrió que eran luciérnagas. Aprendió que emitían luz para comunicarse y atraer a sus parejas. “La bioluminiscencia es algo increíble”, dijo Pepe con los ojos brillando tanto como los insectos.</p>
+        <p>Los niños continuaron investigando durante días. Aprendieron que todo en la naturaleza estaba conectado: el agua nutría las plantas, las plantas daban alimento a los animales, y los animales ayudaban a las plantas a reproducirse. “La ciencia de la naturaleza es como un gran rompecabezas en el que todo encaja”, dijo Ana con asombro.</p>
+        <p>Una tarde, el abuelo reunió a los amigos y les explicó algo muy importante: “Este jardín es un ejemplo de cómo funciona la naturaleza cuando cuidamos el medio ambiente. Si dañamos el agua, las plantas sufren; si dañamos a los insectos, las plantas no se reproducen. Es nuestra responsabilidad cuidar y proteger todo lo que nos rodea”.</p>
+        <p>Los niños se sintieron inspirados. Decidieron cuidar el jardín, plantar más flores y enseñar a otros niños del pueblo sobre lo que habían aprendido. Comprendieron que la ciencia no solo era algo que se estudiaba en libros, sino algo que vivía y respiraba en cada rincón del mundo.</p>
+        <p>Así, el misterio del jardín encantado se resolvió, y los tres amigos se convirtieron en pequeños guardianes de la naturaleza, listos para aprender, enseñar y proteger el maravilloso mundo natural que los rodeaba.</p>
+        <p><strong>Fin</strong></p>
+        <button id="readButton">Leer en voz alta</button>
+    </div>
+
+    <script>
+        const readButton = document.getElementById('readButton');
+        const storyText = document.getElementById('storyContainer').innerText;
+    
+        readButton.addEventListener('click', () => {
+            const synth = window.speechSynthesis;
+            const utterThis = new SpeechSynthesisUtterance(storyText);
+    
+            // Obtener la lista de voces disponibles
+            let voices = synth.getVoices();
+    
+            // Filtrar para seleccionar una voz en español
+            let spanishVoice = voices.find(voice => voice.lang.startsWith('es'));
+    
+            // Si hay una voz en español, usarla
+            if (spanishVoice) {
+                utterThis.voice = spanishVoice;
+            }
+    
+            synth.speak(utterThis);
+        });
+    
+        // Este código asegura que las voces estén cargadas antes de usar speechSynthesis
+        window.speechSynthesis.onvoiceschanged = function() {
+            voices = window.speechSynthesis.getVoices();
+        };
+    </script>
+
+</body>
+</html>

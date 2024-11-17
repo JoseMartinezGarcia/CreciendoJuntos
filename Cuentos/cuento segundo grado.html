@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La promesa de Estrella</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #storyContainer {
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #readButton {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #readButton:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="storyContainer">
+        <h1>La Promesa de Estrella</h1>
+        <p>Había una vez una niña llamada Estrella que vivía en un pueblo pequeño, rodeado de praderas llenas de flores y árboles frutales. Estrella era conocida en el pueblo por su sonrisa brillante y su amor por las historias. Pero más que nada, a Estrella le gustaba coleccionar canicas. Tenía una colección enorme, con canicas de colores que brillaban bajo el sol.</p>
+        <p>Un día, el maestro del pueblo, Don Julián, anunció un concurso de talentos. Quien ganara recibiría una hermosa canica dorada, única en su tipo. Estrella se emocionó mucho y decidió participar contando una de sus mejores historias.</p>
+        <p>Mientras preparaba su cuento, un niño llamado Tomás, que también coleccionaba canicas, se le acercó con ojos tristes. “Estrella, se me rompió mi canica favorita. No tengo nada especial para participar. ¿Podrías prestarme una de las tuyas? Prometo cuidarla”, pidió Tomás.</p>
+        <p>Estrella miró su colección. Sus canicas eran su tesoro más preciado y temía perder alguna. Pero, al ver la cara de Tomás, recordó que ser generoso y ayudar a los demás era importante. Con una sonrisa, le entregó una canica azul brillante. “Confío en ti, Tomás”, le dijo.</p>
+        <p>El día del concurso llegó. Estrella contó su historia, pero, para su sorpresa, Tomás ganó el premio con su impresionante truco de canicas. Recibió la canica dorada con emoción. Después del concurso, se acercó a Estrella y le devolvió la canica azul. “Gracias por prestármela, Estrella”, dijo con sinceridad.</p>
+        <p>Pero, al día siguiente, Estrella notó que su canica tenía un pequeño rasguño. Sintió que la promesa de Tomás de cuidarla se había roto. Se sintió decepcionada y fue a buscarlo. “Tomás, confiaste en mí y te fallé. No cuidé bien tu canica”, admitió él, con lágrimas en los ojos. “Lo lamento mucho”.</p>
+        <p>Estrella se quedó pensando. Su primera reacción fue enfadarse, pero luego recordó algo importante: todos cometemos errores y es parte de ser un buen amigo perdonar. “Te perdono, Tomás”, dijo, aunque aún sentía tristeza. “Lo que importa es que seas honesto y aprendas de esto”.</p>
+        <p>Tomás prometió ser más cuidadoso en el futuro y trabajó para ayudar a Estrella a reparar el rasguño, usando una pequeña pintura especial que hicieron juntos. Con el tiempo, la canica volvió a brillar y su amistad se fortaleció.</p>
+        <p>La experiencia enseñó a Estrella y Tomás que ser ético significaba ser honesto, cumplir las promesas y aceptar cuando se cometían errores, siempre con la intención de mejorar y hacer lo correcto. Juntos, decidieron enseñar a otros niños del pueblo sobre la importancia de la honestidad, el respeto y el perdón.</p>
+        <p><strong>Fin.</strong></p>
+        <button id="readButton">Leer en voz alta</button>
+    </div>
+
+    <script>
+        const readButton = document.getElementById('readButton');
+        const storyText = document.getElementById('storyContainer').innerText;
+    
+        readButton.addEventListener('click', () => {
+            const synth = window.speechSynthesis;
+            const utterThis = new SpeechSynthesisUtterance(storyText);
+    
+            // Obtener la lista de voces disponibles
+            let voices = synth.getVoices();
+    
+            // Filtrar para seleccionar una voz en español
+            let spanishVoice = voices.find(voice => voice.lang.startsWith('es'));
+    
+            // Si hay una voz en español, usarla
+            if (spanishVoice) {
+                utterThis.voice = spanishVoice;
+            }
+    
+            synth.speak(utterThis);
+        });
+    
+        // Este código asegura que las voces estén cargadas antes de usar speechSynthesis
+        window.speechSynthesis.onvoiceschanged = function() {
+            voices = window.speechSynthesis.getVoices();
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La promesa de Estrella</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #storyContainer {
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #readButton {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #readButton:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="storyContainer">
+        <h1>El Misterio de la Niebla Mágica</h1>
+        <p>En el pequeño pueblo de Valle Claro, cada otoño ocurría algo muy especial: una espesa niebla cubría el bosque durante tres días y tres noches. Todos los años, los niños del pueblo se preguntaban de dónde venía esa niebla, pero nadie había encontrado la respuesta. Entre los más curiosos estaba Sofía, una niña a quien le encantaba resolver misterios.</p>
+        <p>“Este año, lo descubriré”, prometió Sofía a sus mejores amigos, Mateo y Valeria. Así, decidieron adentrarse en el bosque al caer la niebla. Armados con linternas, cuadernos y una mochila con provisiones, emprendieron su aventura.</p>
+        <h2>El Primer Encuentro</h2>
+        <p>Al internarse en la niebla, los niños notaron que el aire estaba mucho más frío de lo normal. “Es raro, porque el otoño aquí no es tan frío”, dijo Valeria, abrazándose a sí misma. Sofía observó que la niebla era más densa cerca del suelo. “Creo que hay algo que enfría el aire y hace que esta niebla se forme”, dijo, sin estar del todo segura.</p>
+        <p>Continuaron caminando, dejando marcas para no perderse. Pronto, escucharon el sonido de agua goteando. Siguieron el sonido hasta llegar a un claro donde el agua brotaba de rocas cubiertas de musgo. La niebla era mucho más espesa allí.</p>
+        <h2>La Fuente Oculta</h2>
+        <p>“¿Será esta agua especial?” preguntó Mateo. Sin pensarlo dos veces, llenó una botella para observarla mejor. Notaron que el agua estaba muy fría, casi helada. Sofía recordó que el aire caliente y el frío se comportaban de maneras diferentes. “Tal vez cuando el aire frío de esta fuente se encuentra con el aire más cálido, se forma la niebla”, sugirió, mientras tocaba el agua con curiosidad.</p>
+        <p>Pero había algo más: cuando apagaron sus linternas, las gotas de agua brillaban tenuemente. Valeria, asombrada, recogió una piedra de la fuente. “Hay algo en las rocas que hace que el agua sea especial”, dijo. Los niños decidieron buscar más pistas para entenderlo.</p>
+        <h2>El Sabio del Bosque</h2>
+        <p>Esa noche, acamparon cerca de la fuente. Alrededor del fuego, apareció un anciano que los observaba con una sonrisa. Era el Sabio del Bosque, conocido por contar historias sobre la naturaleza. “La niebla no es mágica, aunque parezca”, les dijo. “Pero solo quienes observan y buscan respuestas pueden descubrir su secreto”.</p>
+        <p>Sofía, Mateo y Valeria le contaron lo que habían observado. “¿Y si la roca tiene minerales que enfrían el agua y liberan algo que hace que brille?” preguntó Sofía. El Sabio sonrió, sin darles respuestas claras. “Los misterios a menudo requieren observación, experimentación y paciencia”, dijo antes de desaparecer en la niebla.</p>
+        <h2>Resolver el Misterio</h2>
+        <p>Durante los siguientes días, los niños investigaron la roca, el agua y cómo reaccionaban. Experimentaron con otros lugares del bosque, probando si la niebla se formaba de manera similar en otras fuentes. Después de muchas observaciones, se dieron cuenta de que ciertas rocas contenían minerales que enfriaban el agua, generando vapor al contacto con el aire cálido. La luz tenue se debía a elementos que absorbían la luz solar durante el día.</p>
+        <p>Aunque no lo entendieron todo al detalle, los niños aprendieron algo muy importante: el mundo está lleno de misterios que pueden resolverse con curiosidad, observación y trabajo en equipo. El pensamiento científico no es solo encontrar respuestas; es aprender a hacerse preguntas, explorar y maravillarse con cada descubrimiento.</p>
+        <p><strong>Fin</strong></p>
+        <button id="readButton">Leer en voz alta</button>
+    </div>
+
+    <script>
+        const readButton = document.getElementById('readButton');
+        const storyText = document.getElementById('storyContainer').innerText;
+    
+        readButton.addEventListener('click', () => {
+            const synth = window.speechSynthesis;
+            const utterThis = new SpeechSynthesisUtterance(storyText);
+    
+            // Obtener la lista de voces disponibles
+            let voices = synth.getVoices();
+    
+            // Filtrar para seleccionar una voz en español
+            let spanishVoice = voices.find(voice => voice.lang.startsWith('es'));
+    
+            // Si hay una voz en español, usarla
+            if (spanishVoice) {
+                utterThis.voice = spanishVoice;
+            }
+    
+            synth.speak(utterThis);
+        });
+    
+        // Este código asegura que las voces estén cargadas antes de usar speechSynthesis
+        window.speechSynthesis.onvoiceschanged = function() {
+            voices = window.speechSynthesis.getVoices();
+        };
+    </script>
+
+</body>
+</html>
