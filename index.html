@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
-            background-image: url('Fondos/FONDO.png '); /* Aquí esta tu fondo original */
+            background-image: url('Fondos/FONDO.png'); /* Aquí esta tu fondo original */
             background-size: cover; /* Asegura que el fondo cubra toda la pantalla */
             background-position: center; /* Centra el fondo */
             font-family: 'Monospace', monospace; /* Cambiado a Monospace */
@@ -28,16 +28,16 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar un poco de profundidad */
         }
 
-
-        .logo {
-            width: 250px; /* Aumenta el tamaño del logo */
-            margin-right: px; /* Espacio entre el logo y el cuadro de búsqueda */
+        .auth-container {
+            display: flex; /* Usar flexbox para alinear los enlaces */
+            gap: 15px; /* Espacio entre enlaces */
+            margin-left: auto; /* Empuja el contenedor a la derecha */
         }
 
         .search-container {
-            display: flex;  /*Flexbox*/
-            /*align-items: center;*/
-            justify-content: flex-end;
+            display: flex;
+            justify-content: flex-start; /* Alinea los elementos a la izquierda dentro del contenedor */
+            gap: 10px; /* Espacio entre el input y el botón de búsqueda */
         }
 
         .search-input {
@@ -56,20 +56,7 @@
             border: none; /* Sin borde */
             border-radius: 15px; /* Esquinas redondeadas */
             padding: 8px 12px; /* Espaciado interno */
-            margin-left: 10px; /* Espacio entre el cuadro de búsqueda y el botón */
             cursor: pointer; /* Cambiar el cursor al pasar el mouse */
-        }
-
-        .auth-container {
-            display: flex; /* Usar flexbox para alinear los enlaces */
-            gap: 15px; /* Espacio entre enlaces */
-            margin-left: auto; /* Empuja el contenedor a la derecha */
-        }
-
-        .auth-link {
-            color: white; /* Color de texto */
-            text-decoration: none; /* Sin subrayado */
-            font-weight: bold; /* Texto en negrita */
         }
 
         .options-container {
@@ -161,40 +148,13 @@
 </head>
 <body>
     <header>
-        <img src="logo.png" alt="Logo" class="logo">
-        <div class="search-container">
-            <input type="text" class="search-input" placeholder="Buscar...">
-            <button class="search-button">Buscar</button>
-        </div>
-        <div class="options-container" style="position: absolute; left: 450px;"> <!-- Mueve hacia la izquierda -->
-            <div class="grado">
-                GRADOS ⭣
-                <div class="dropdown">
-                    <button>GRADO A</button>
-                    <button>GRADO B</button>
-                    <button>GRADO C</button>
-                    <button>GRADO D</button>
-                    <button>GRADO F</button>
-                </div>
-            </div>
-            <div class="ayuda">
-                AYUDA ⭣
-                <div class="dropdown">
-                    <button>Preguntas Frecuentes</button>
-                    <button>Soporte</button>
-                </div>
-            </div>
-            <div class="cuentos">
-                CUENTOS ⭣
-                <div class="dropdown">
-                    <button>Caperucita Roja</button>
-                    <button>El Patito Feo</button>
-                </div>
-            </div>
-        </div>
         <div class="auth-container">
             <a href="#" class="auth-link">Registro</a>
             <a href="#" class="auth-link">Iniciar Sesión</a>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Buscar...">
+            <button class="search-button">Buscar</button>
         </div>
     </header>    
 
@@ -218,7 +178,6 @@
         </button>
     </div>
     
-
     <footer>
         <p>© 2025 CreciendoJuntos. Todos los derechos reservados.</p>
     </footer>
