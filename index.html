@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
-            background-image: url('Fondos/FONDO.png'); /* Aquí está tu fondo original */
+            background-image: url('Fondos/FONDO.png'); /* Aquí esta tu fondo original */
             background-size: cover; /* Asegura que el fondo cubra toda la pantalla */
             background-position: center; /* Centra el fondo */
             font-family: 'Monospace', monospace; /* Cambiado a Monospace */
@@ -121,13 +121,13 @@
             font-size: 1rem;
         }
 
+        /* Contenedor para centrar el botón de imagen en el viewport */
         .centered-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 20px;
-            flex-wrap: wrap; /* Para que los botones se ajusten en varias filas */
+            justify-content: space-between; /* Distribuye los botones con espacio entre ellos */
+            align-items: center; /* Alinea los botones verticalmente */
+            width: 100%; /* Ajusta el ancho para ocupar todo el espacio disponible */
+            padding: 20px; /* Espaciado alrededor de los botones */
         }
 
         .image-button {
@@ -135,7 +135,6 @@
             background: none; /* Sin fondo */
             cursor: pointer; /* Cambiar el cursor al pasar el mouse */
             transition: transform 0.3s ease; /* Agrega una transición suave */
-            margin: 10px; /* Espaciado para pantallas pequeñas */
         }
 
         .image-button:hover {
@@ -143,46 +142,7 @@
         }
 
         .image-btn {
-            max-width: 100%; /* Imágenes responsivas */
-            height: auto;
-        }
-
-        /* Media Queries */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column; /* Diseño vertical */
-                align-items: center;
-            }
-
-            .auth-container, .search-container {
-                margin: 10px 0;
-                justify-content: center;
-            }
-
-            .options-container {
-                margin-left: 0;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                font-size: 14px; /* Reduce el tamaño del texto */
-            }
-
-            .search-input {
-                width: 150px;
-            }
-
-            footer p {
-                font-size: 0.8rem;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .auth-container {
-                display: none; /* Oculta los enlaces */
-            }
+            height: auto; /* Mantiene la proporción de la imagen */
         }
     </style>
 </head>
