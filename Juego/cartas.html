@@ -45,51 +45,46 @@
         };
 
         function preload() {
-            // Carga de imágenes
-            this.load.image('background','assets/fondonum.jpg')
-            this.load.image('back', 'assets/cartas/back.jpg');  // Imagen del dorso de la carta
-            this.load.image('lobo', 'Juego/assets/cartas/lobo.jpg');
-            this.load.image('pez', 'Juego/assets/cartas/pez.jpg');
-            this.load.image('rosa', 'Juego/assets/cartas/rosa.jpg');
-            this.load.image('cactus', 'Juego/assets/cartas/cactus.jpg');
-            this.load.image('tormenta', 'Juego/assets/cartas/tormenta.jpg');
-            this.load.image('terremoto', 'Juego/assets/cartas/terremoto.jpg');
+            this.load.image('background', 'assets/fondonum.jpg');
+            this.load.image('back', 'assets/cartas/back.jpg');  
+            this.load.image('lobo', 'assets/cartas/lobo.jpg');
+            this.load.image('pez', 'assets/cartas/pez.jpg');
+            this.load.image('rosa', 'assets/cartas/rosa.jpg');
+            this.load.image('cactus', 'assets/cartas/cactus.jpg');
+            this.load.image('tormenta', 'assets/cartas/tormenta.jpg');
+            this.load.image('terremoto', 'assets/cartas/terremoto.jpg');
         }
 
         function create() {
-
-            // Agregar la imagen de fondo, asegurándote de que ocupe toda la pantalla
-            bg = this.add.image(0, 0, 'background').setOrigin(0, 0);
+            const bg = this.add.image(0, 0, 'background').setOrigin(0, 0);
             bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
 
-            // Crear y barajar cartas
-            let shuffledImages = Phaser.Utils.Array.Shuffle([...images, ...images]);
+            const shuffledImages = Phaser.Utils.Array.Shuffle([...images, ...images]);
             cards = this.add.group();
 
             for (let i = 0; i < shuffledImages.length; i++) {
-                let x = 100 + (i % 4) * 150;
-                let y = 100 + Math.floor(i / 4) * 200;
-                let card = this.add.sprite(x, y, 'back').setInteractive();
+                const x = 100 + (i % 4) * 150;
+                const y = 100 + Math.floor(i / 4) * 200;
+                const card = this.add.sprite(x, y, 'back').setInteractive();
                 card.data = { id: shuffledImages[i], isFlipped: false };
                 card.on('pointerdown', () => flipCard(card, this));
                 cards.add(card);
             }
         }
 
-        function update() {
-            // No se necesita actualización constante
-        }
+        function update() {}
 
         function flipCard(card, scene) {
             if (!canFlip || card.data.isFlipped) return;
 
             card.setTexture(card.data.id);
-            card.data.isFlipped = true;
 
             if (!firstCard) {
                 firstCard = card;
-            } else {
+                firstCard.data.isFlipped = true;
+            } else if (!secondCard && card !== firstCard) {
                 secondCard = card;
+                secondCard.data.isFlipped = true;
                 canFlip = false;
                 checkMatch(scene);
             }
@@ -108,7 +103,9 @@
             } else {
                 scene.time.delayedCall(1000, () => {
                     firstCard.setTexture('back');
+                    firstCard.data.isFlipped = false;
                     secondCard.setTexture('back');
+                    secondCard.data.isFlipped = false;
                     resetCards();
                 });
             }
@@ -116,8 +113,21 @@
 
         function showDescription(id, scene) {
             const text = descriptions[id];
+
+            // Dibujar un rectángulo blanco semitransparente
+            const rectWidth = 700;
+            const rectHeight = 50;
+            const rect = scene.add.rectangle(400, 550, rectWidth, rectHeight, 0xffffff, 0.7);
+            rect.setOrigin(0.5);
+
+            // Mostrar texto encima del rectángulo
             const infoText = scene.add.text(400, 550, text, { font: '20px Arial', fill: '#000' }).setOrigin(0.5);
-            scene.time.delayedCall(2000, () => infoText.destroy());
+
+            // Destruir después de 2 segundos
+            scene.time.delayedCall(2000, () => {
+                rect.destroy();
+                infoText.destroy();
+            });
         }
 
         function resetCards() {
