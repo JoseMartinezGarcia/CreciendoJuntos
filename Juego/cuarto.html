@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Aventuras Matemáticas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 1000,
+            height: 700,
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        let game = new Phaser.Game(config);
+        let score = 0;
+        let level = 0;
+        let questionCount = 0; // Contador de preguntas respondidas
+        const maxQuestions = 10; // Máximo de preguntas permitidas
+        let questionText, optionButtons = [], scoreText, levelText, endText;
+
+        const levels = [
+            {
+                title: "Multiplicación y División",
+                questions: [
+                    { question: "12 x 8 =", options: ["96", "88", "104"], answer: "96" },
+                    { question: "144 ÷ 12 =", options: ["12", "14", "10"], answer: "12" },
+                ]
+            },
+            {
+                title: "Fracciones y Decimales",
+                questions: [
+                    { question: "¿Cuál es mayor: 3/4 o 0.5?", options: ["3/4", "0.5", "Son iguales"], answer: "3/4" },
+                    { question: "Convierte 0.25 a fracción:", options: ["1/4", "2/5", "3/4"], answer: "1/4" },
+                ]
+            },
+            {
+                title: "Perímetros y Áreas",
+                questions: [
+                    { question: "Perímetro de un rectángulo (4x6):", options: ["20", "24", "28"], answer: "20" },
+                    { question: "Área de un triángulo (base=8, altura=5):", options: ["20", "40", "16"], answer: "20" },
+                ]
+            },
+            {
+                title: "Resolución de Problemas",
+                questions: [
+                    { question: "Si compro 3 manzanas a $4 cada una, ¿cuánto pago?", options: ["$12", "$8", "$16"], answer: "$12" },
+                    { question: "Un coche recorre 60 km en 2 horas. ¿Cuál es su velocidad media?", options: ["30 km/h", "60 km/h", "120 km/h"], answer: "30 km/h" },
+                ]
+            }
+        ];
+
+        function preload() {
+            // Cargar una imagen de fondo
+            this.load.image('background', 'assets/fondonum.jpg'); // Imagen de fondo
+        }
+
+        function create() {
+            // Fondo
+            this.add.image(500, 350, 'background').setDisplaySize(1000, 700);
+
+            // Texto de puntuación y nivel
+            scoreText = this.add.text(10, 10, 'Puntuación: 0', { font: '24px Arial', fill: '#ffffff' });
+            levelText = this.add.text(10, 40, 'Nivel: 1 - ' + levels[level].title, { font: '24px Arial', fill: '#ffffff' });
+
+            // Texto de pregunta
+            questionText = this.add.text(500, 150, '', { font: '28px Arial', fill: '#ffffff', align: 'center' }).setOrigin(0.5);
+
+            // Texto de fin del juego (invisible inicialmente)
+            endText = this.add.text(500, 350, '¡Juego Terminado! Gracias por participar.', 
+                { font: '32px Arial', fill: '#ff0000', align: 'center' }).setOrigin(0.5);
+            endText.setVisible(false);
+
+            // Crear botones para opciones
+            for (let i = 0; i < 3; i++) {
+                let button = this.add.text(500, 300 + i * 60, '', { font: '20px Arial', fill: '#000', backgroundColor: '#ffffff', padding: 10 })
+                    .setOrigin(0.5)
+                    .setInteractive()
+                    .on('pointerdown', () => checkAnswer(button.text));
+                optionButtons.push(button);
+            }
+
+            loadQuestion();
+        }
+
+        function update() {}
+
+        function loadQuestion() {
+            // Verificar si se ha alcanzado el límite de preguntas
+            if (questionCount >= maxQuestions) {
+                endGame();
+                return;
+            }
+
+            // Obtener la pregunta actual
+            let currentLevel = levels[level];
+            let currentQuestion = currentLevel.questions[questionCount % currentLevel.questions.length];
+
+            // Mostrar texto de pregunta
+            questionText.setText(currentQuestion.question);
+
+            // Mostrar opciones
+            currentQuestion.options.forEach((option, index) => {
+                optionButtons[index].setText(option);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            if (questionCount >= maxQuestions) return; // Detener interacción si ya se terminó el juego
+
+            let currentLevel = levels[level];
+            let currentQuestion = currentLevel.questions[questionCount % currentLevel.questions.length];
+
+            if (selectedOption === currentQuestion.answer) {
+                score += 10;
+                scoreText.setText('Puntuación: ' + score);
+            }
+
+            questionCount++; // Incrementar el contador de preguntas
+
+            // Avanzar de nivel si es necesario
+            if (questionCount % currentLevel.questions.length === 0 && level < levels.length - 1) {
+                level++;
+                levelText.setText('Nivel: ' + (level + 1) + ' - ' + levels[level].title);
+            }
+
+            loadQuestion();
+        }
+
+        function endGame() {
+            questionText.setText('');
+            optionButtons.forEach(button => button.setVisible(false)); // Ocultar botones
+            endText.setVisible(true); // Mostrar mensaje final
+        }
+    </script>
+</body>
+</html>
