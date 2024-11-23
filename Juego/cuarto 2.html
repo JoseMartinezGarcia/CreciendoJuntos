@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>El Detective de Palabras</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            scene: {
+                preload: preload,
+                create: create
+            }
+        };
+
+        const game = new Phaser.Game(config);
+
+        let board, words, score = 0, scoreText, currentWord = "";
+        let targetWord, hintText, letters = [];
+        const wordList = [
+            { word: "CASA", hint: "Es un lugar donde vivimos." },
+            { word: "PERRO", hint: "Es un animal doméstico." },
+            { word: "SOL", hint: "Es una estrella que ilumina la Tierra." },
+            { word: "FLOR", hint: "Es parte de una planta y tiene colores." }
+        ];
+
+        function preload() {
+            this.load.image('background', 'assets/fondonum.jpg'); // Fondo del juego
+        }
+
+        function create() {
+            // Fondo del juego
+            this.add.image(400, 300, 'background').setDisplaySize(800, 600);
+
+            // Texto de puntuación
+            scoreText = this.add.text(10, 10, "Puntuación: 0", { font: "24px Arial", fill: "#ffffff" });
+
+            // Crear las letras del tablero
+            createBoard(this);
+
+            // Seleccionar una palabra objetivo aleatoria
+            loadNewWord(this);
+        }
+
+        function createBoard(scene) {
+            const lettersArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            board = [];
+            const randomWord = wordList[Math.floor(Math.random() * wordList.length)].word;
+            const wordRow = Math.floor(Math.random() * 5);
+            const wordColStart = Math.floor(Math.random() * (5 - randomWord.length));
+
+            for (let row = 0; row < 5; row++) {
+                board[row] = [];
+                for (let col = 0; col < 5; col++) {
+                    let letter;
+                    if (row === wordRow && col >= wordColStart && col < wordColStart + randomWord.length) {
+                        // Colocar las letras de la palabra en una fila específica
+                        letter = randomWord[col - wordColStart];
+                    } else {
+                        // Generar letras aleatorias
+                        letter = lettersArray[Math.floor(Math.random() * lettersArray.length)];
+                    }
+
+                    const text = scene.add.text(100 + col * 100, 100 + row * 100, letter, {
+                        font: "32px Arial",
+                        fill: "#ffffff"
+                    }).setInteractive();
+
+                    text.row = row;
+                    text.col = col;
+
+                    text.on('pointerdown', () => selectLetter(scene, text));
+                    letters.push(text);
+                    board[row][col] = text;
+                }
+            }
+        }
+
+        function loadNewWord(scene) {
+            const wordData = wordList[Math.floor(Math.random() * wordList.length)];
+            targetWord = wordData.word;
+            currentWord = "";
+
+            // Mostrar pista
+            if (hintText) hintText.destroy();
+            hintText = scene.add.text(400, 50, `Pista: ${wordData.hint}`, {
+                font: "24px Arial",
+                fill: "#ffffff",
+                align: "center"
+            }).setOrigin(0.5);
+        }
+
+        function selectLetter(scene, letter) {
+            currentWord += letter.text;
+
+            // Cambiar el color de la letra seleccionada
+            letter.setFill("#00ff00");
+
+            if (currentWord === targetWord) {
+                score += 10;
+                scoreText.setText(`Puntuación: ${score}`);
+                resetBoard(scene);
+                loadNewWord(scene);
+            } else if (!targetWord.startsWith(currentWord)) {
+                resetBoard(scene);
+                currentWord = "";
+            }
+        }
+
+        function resetBoard(scene) {
+            letters.forEach(letter => {
+                letter.setFill("#ffffff");
+            });
+        }
+    </script>
+</body>
+</html>
