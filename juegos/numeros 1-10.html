@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Números</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+            margin: 0;
+        }
+        #gameContainer {
+            width: 800px;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer"></div>
+
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            parent: 'gameContainer',
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        let game = new Phaser.Game(config);
+        let score = 0, currentNumber = 1, startTime, timerText, gameEnded = false;
+        let countdownText, countdown = 3, countdownStarted = false, gameStarted = false;
+
+        function preload() {
+            this.load.image('background', 'assets/fondonum.jpg');
+        }
+
+        function create() {
+            this.add.image(400, 300, 'background');
+
+            // Agregar texto de inicio
+            const startText = this.add.text(400, 300, 'Haz clic para empezar', { font: '48px Arial', fill: '#ffffff' }).setOrigin(0.5);
+            this.input.once('pointerdown', () => {
+                startText.setVisible(false); // Ocultar el texto de inicio al hacer clic
+                initializeGame(this);
+            });
+        }
+
+        function initializeGame(scene) {
+            const textStyle = { font: '64px Verdana', fill: '#ffffff' };
+            const timerStyle = { font: '32px Arial', fill: '#000000' };
+            scene.numbers = [];
+            const minDistance = 100;
+
+            for (let i = 1; i <= 10; i++) {
+                let numberText;
+                let validPosition = false;
+
+                while (!validPosition) {
+                    const x = Phaser.Math.Between(50, 750);
+                    const y = Phaser.Math.Between(50, 550);
+
+                    validPosition = scene.numbers.every(number => 
+                        Phaser.Math.Distance.Between(x, y, number.x, number.y) > minDistance
+                    );
+
+                    if (validPosition) {
+                        numberText = scene.add.text(x, y, i.toString(), textStyle);
+                        numberText.setInteractive({ useHandCursor: true });
+                        numberText.numberValue = i;
+                        numberText.setVisible(false);
+                        scene.numbers.push(numberText);
+                    }
+                }
+
+                numberText.on('pointerdown', () => {
+                    if (numberText.numberValue === currentNumber && gameStarted && !gameEnded) {
+                        numberText.setTint(0x00ff00);
+                        currentNumber++;
+                        if (currentNumber > 10) {
+                            gameEnded = true;
+                            const timeTaken = (scene.time.now - startTime) / 1000;
+                            score = Math.max(10000 - Math.floor(timeTaken * 100), 0);
+
+                            // Dibujar cuadro de fondo con esquinas redondeadas, color lila y transparencia del 70%
+                            const background = scene.add.graphics();
+                            background.fillStyle(0xaa47d8, 0.7);
+                            background.fillRoundedRect(200, 200, 400, 200, 20);
+
+                            // Añadir texto centrado encima del cuadro
+                            scene.add.text(400, 250, 'Juego Terminado!', { font: '48px Arial', fill: '#0000ff' }).setOrigin(0.5);
+                            scene.add.text(400, 330, `Tu Puntuación: ${score}`, { font: '40px Arial', fill: '#ff0000' }).setOrigin(0.5);
+                        }
+                    }
+                });
+            }
+
+            countdownText = scene.add.text(350, 250, '3', { font: '100px Arial', fill: '#ff0000' });
+            timerText = scene.add.text(10, 10, 'Tiempo: 0', timerStyle);
+        }
+
+        function update() {
+            if (!countdownStarted) {
+                countdownStarted = true;
+                this.time.addEvent({
+                    delay: 1000,
+                    callback: () => {
+                        countdown--;
+                        countdownText.setText(countdown > 0 ? countdown : '¡Vamos!');
+                        
+                        if (countdown === 0) {
+                            startPlaying(this);
+                        }
+                    },
+                    repeat: 3
+                });
+            }
+
+            if (gameStarted && !gameEnded) {
+                const elapsedTime = (this.time.now - startTime) / 1000;
+                timerText.setText('Tiempo: ' + elapsedTime.toFixed(2) + 's');
+            }
+        }
+
+        function startPlaying(scene) {
+            countdownText.destroy();
+            startTime = scene.time.now;
+            gameStarted = true;
+
+            scene.numbers.forEach(number => {
+                number.setVisible(true);
+            });
+        }
+    </script>
+</body>
+</html>
