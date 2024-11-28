@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juego de Memoria de Ciencias Naturales</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e6f7ff;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        let game = new Phaser.Game(config);
+        let cards, firstCard, secondCard;
+        let canFlip = true;
+        let matchedPairs = 0;
+
+        const images = ['lobo', 'pez', 'rosa', 'cactus', 'tormenta', 'terremoto'];
+        const descriptions = {
+            'lobo': 'El lobo es un mamífero que vive en manadas y habita bosques y montañas.',
+            'pez': 'El pez vive en el agua y respira mediante branquias.',
+            'rosa': 'La rosa es una flor que florece en primavera y tiene pétalos coloridos.',
+            'cactus': 'El cactus crece en zonas desérticas y almacena agua para sobrevivir.',
+            'tormenta': 'La tormenta eléctrica causa relámpagos y truenos.',
+            'terremoto': 'Un terremoto ocurre cuando la tierra tiembla debido a movimientos de placas tectónicas.'
+        };
+
+        function preload() {
+            this.load.image('background', 'assets/fondonum.jpg');
+            this.load.image('back', 'assets/cartas/back.jpg');  
+            this.load.image('lobo', 'assets/cartas/lobo.jpg');
+            this.load.image('pez', 'assets/cartas/pez.jpg');
+            this.load.image('rosa', 'assets/cartas/rosa.jpg');
+            this.load.image('cactus', 'assets/cartas/cactus.jpg');
+            this.load.image('tormenta', 'assets/cartas/tormenta.jpg');
+            this.load.image('terremoto', 'assets/cartas/terremoto.jpg');
+        }
+
+        function create() {
+            const bg = this.add.image(0, 0, 'background').setOrigin(0, 0);
+            bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
+
+            const shuffledImages = Phaser.Utils.Array.Shuffle([...images, ...images]);
+            cards = this.add.group();
+
+            for (let i = 0; i < shuffledImages.length; i++) {
+                const x = 100 + (i % 4) * 150;
+                const y = 100 + Math.floor(i / 4) * 200;
+                const card = this.add.sprite(x, y, 'back').setInteractive();
+                card.data = { id: shuffledImages[i], isFlipped: false };
+                card.on('pointerdown', () => flipCard(card, this));
+                cards.add(card);
+            }
+        }
+
+        function update() {}
+
+        function flipCard(card, scene) {
+            if (!canFlip || card.data.isFlipped) return;
+
+            card.setTexture(card.data.id);
+
+            if (!firstCard) {
+                firstCard = card;
+                firstCard.data.isFlipped = true;
+            } else if (!secondCard && card !== firstCard) {
+                secondCard = card;
+                secondCard.data.isFlipped = true;
+                canFlip = false;
+                checkMatch(scene);
+            }
+        }
+
+        function checkMatch(scene) {
+            if (firstCard.data.id === secondCard.data.id) {
+                scene.time.delayedCall(500, () => {
+                    showDescription(firstCard.data.id, scene);
+                    resetCards();
+                    matchedPairs++;
+                    if (matchedPairs === images.length) {
+                        endGame(scene);
+                    }
+                });
+            } else {
+                scene.time.delayedCall(1000, () => {
+                    firstCard.setTexture('back');
+                    firstCard.data.isFlipped = false;
+                    secondCard.setTexture('back');
+                    secondCard.data.isFlipped = false;
+                    resetCards();
+                });
+            }
+        }
+
+        function showDescription(id, scene) {
+            const text = descriptions[id];
+
+            // Dibujar un rectángulo blanco semitransparente
+            const rectWidth = 700;
+            const rectHeight = 50;
+            const rect = scene.add.rectangle(400, 550, rectWidth, rectHeight, 0xffffff, 0.7);
+            rect.setOrigin(0.5);
+
+            // Mostrar texto encima del rectángulo
+            const infoText = scene.add.text(400, 550, text, { font: '20px Arial', fill: '#000' }).setOrigin(0.5);
+
+            // Destruir después de 2 segundos
+            scene.time.delayedCall(2000, () => {
+                rect.destroy();
+                infoText.destroy();
+            });
+        }
+
+        function resetCards() {
+            firstCard = null;
+            secondCard = null;
+            canFlip = true;
+        }
+
+        function endGame(scene) {
+            scene.add.text(400, 300, '¡Juego Terminado!', { font: '40px Arial', fill: '#00f' }).setOrigin(0.5);
+        }
+    </script>
+</body>
+</html>
