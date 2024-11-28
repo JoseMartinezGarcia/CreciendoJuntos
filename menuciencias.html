@@ -25,11 +25,12 @@
             justify-content: center;
         }
 
-        .menu button {
+        .menu .menu-item {
             margin: 10px 0;
             padding: 15px;
             font-size: 18px;
             color: white;
+            text-align: center;
             background-color: transparent;
             border: 2px solid white;
             border-radius: 5px;
@@ -37,7 +38,7 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .menu button:hover {
+        .menu .menu-item:hover {
             background-color: white;
             color: black;
         }
@@ -45,7 +46,7 @@
 </head>
 <body>
     <div class="menu">
-        <button id="boton1">Memorama</button>
+        <div class="menu-item" onclick="window.location.href='juegos/memoramaciencias/index.html'">Memorama</div>
         <button id="boton2">Botón 2</button>
         <button id="boton3">Botón 3</button>
     </div>
