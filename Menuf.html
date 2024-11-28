@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Materias</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('Fondos/FONDO.png'); /* Ruta de la imagen */
+            background-size: cover; /* Hace que la imagen cubra toda la pantalla */
+            background-position: center; /* Centra la imagen */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+        }
+
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 900px;
+        }
+
+        .menu-item {
+            position: relative;
+            width: 260px;
+            height: 280px;
+            overflow: hidden;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            transform: scale(1.15);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+        <div class="menu-item" onclick="window.location.href='menuciencias.html'">
+            <img src="BtnMenu/Ciencias.png" alt="Ciencias">
+        </div>
+        <div class="menu-item" onclick="window.location.href='juegos/numeros 1-10.html'">
+            <img src="BtnMenu/Matemticas.png" alt="Matemáticas">
+        </div>
+        <div class="menu-item" onclick="window.location.href='arte.html'">
+            <img src="BtnMenu/Arte.png" alt="Arte">
+        </div>
+        <div class="menu-item" onclick="window.location.href='espanol.html'">
+            <img src="BtnMenu/Español.png" alt="Español">
+        </div>
+        <div class="menu-item" onclick="window.location.href='etica.html'">
+            <img src="BtnMenu/Etica.png" alt="Ética">
+        </div>
+    </div>
+</body>
+</html>
