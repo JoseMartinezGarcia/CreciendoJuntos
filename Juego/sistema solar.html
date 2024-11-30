@@ -12,7 +12,6 @@
             align-items: center;
             height: 100vh;
             background-color: #000;
-            color: white;
             overflow: hidden;
         }
     </style>
@@ -33,32 +32,35 @@
 
         let game = new Phaser.Game(config);
         let planets = [
-            { name: "Mercurio", img: "Juego/assets/espacio/mercurio.jpg", question: "¿Cuál es el planeta más cercano al sol?", answer: "Mercurio" },
-            { name: "Venus", img: "Juego/assets/espacio/venus.jpg", question: "¿Cuál es el planeta más caliente?", answer: "Venus" },
-            { name: "Tierra", img: "Juego/assets/espacio/tierra.jpg", question: "¿Qué planeta tiene agua en estado líquido?", answer: "Tierra" },
-            { name: "Marte", img: "Juego/assets/espacio/marte.jpg", question: "¿Cuál es el planeta conocido como el 'planeta rojo'?", answer: "Marte" }
+            { name: "Mercurio", imgKey: "mercurio", question: "¿Cuál es el planeta más cercano al sol?", answer: "Mercurio" },
+            { name: "Venus", imgKey: "venus", question: "¿Cuál es el planeta más caliente?", answer: "Venus" },
+            { name: "Tierra", imgKey: "tierra", question: "¿Qué planeta tiene agua en estado líquido?", answer: "Tierra" },
+            { name: "Marte", imgKey: "marte", question: "¿Cuál es el planeta conocido como el 'planeta rojo'?", answer: "Marte" }
         ];
         let currentPlanetIndex = 0;
         let score = 0;
-        let questionText, scoreText;
+        let questionText, scoreText, planetImage;
 
         function preload() {
-            this.load.image('background', 'Juego/assets/espacio/espaciobg.jpg');
-            planets.forEach(planet => {
-                this.load.image(planet.name.toLowerCase(), `assets/${planet.img}`);
-            });
+            this.load.image('background', 'assets/espacio/espaciobg.jpg');
+            this.load.image('mercurio', 'assets/espacio/mercurio.jpg');
+            this.load.image('venus', 'assets/espacio/venus.jpg');
+            this.load.image('tierra', 'assets/espacio/tierra.jpg');
+            this.load.image('marte', 'assets/espacio/marte.jpg');
         }
 
         function create() {
             this.add.image(400, 300, 'background').setDisplaySize(800, 600);
             scoreText = this.add.text(10, 10, 'Puntuación: 0', { font: '32px Arial', fill: '#ffffff' });
 
+            // Barajar las preguntas al inicio del juego
+            planets = Phaser.Utils.Array.Shuffle(planets);
             showPlanet(this);
         }
 
         function showPlanet(scene) {
             let planet = planets[currentPlanetIndex];
-            scene.add.image(400, 200, planet.name.toLowerCase()).setDisplaySize(200, 200);
+            planetImage = scene.add.image(400, 200, planet.imgKey).setDisplaySize(200, 200);
             questionText = scene.add.text(400, 400, planet.question, { font: '24px Arial', fill: '#ffffff' }).setOrigin(0.5);
 
             let answers = Phaser.Utils.Array.Shuffle(planets.map(p => p.name));
@@ -79,7 +81,12 @@
         }
 
         function nextPlanet(scene) {
-            scene.children.removeAll();
+            questionText.destroy();
+            planetImage.destroy();
+            scene.children.list
+                .filter(child => child.type === 'Text' && child !== scoreText)
+                .forEach(child => child.destroy());
+
             currentPlanetIndex++;
             if (currentPlanetIndex < planets.length) {
                 showPlanet(scene);
