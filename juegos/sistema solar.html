@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Explorador del Sistema Solar</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            backgroundColor: "#000",
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        let game = new Phaser.Game(config);
+        let planets = [
+            { name: "Mercurio", imgKey: "mercurio", question: "¿Cuál es el planeta más cercano al sol?", answer: "Mercurio" },
+            { name: "Venus", imgKey: "venus", question: "¿Cuál es el planeta más caliente?", answer: "Venus" },
+            { name: "Tierra", imgKey: "tierra", question: "¿Qué planeta tiene agua en estado líquido?", answer: "Tierra" },
+            { name: "Marte", imgKey: "marte", question: "¿Cuál es el planeta conocido como el 'planeta rojo'?", answer: "Marte" }
+        ];
+        let currentPlanetIndex = 0;
+        let score = 0;
+        let questionText, scoreText, planetImage;
+
+        function preload() {
+            this.load.image('background', 'assets/espacio/espaciobg.jpg');
+            this.load.image('mercurio', 'assets/espacio/mercurio.jpg');
+            this.load.image('venus', 'assets/espacio/venus.jpg');
+            this.load.image('tierra', 'assets/espacio/tierra.jpg');
+            this.load.image('marte', 'assets/espacio/marte.jpg');
+        }
+
+        function create() {
+            this.add.image(400, 300, 'background').setDisplaySize(800, 600);
+            scoreText = this.add.text(10, 10, 'Puntuación: 0', { font: '32px Arial', fill: '#ffffff' });
+
+            // Barajar las preguntas al inicio del juego
+            planets = Phaser.Utils.Array.Shuffle(planets);
+            showPlanet(this);
+        }
+
+        function showPlanet(scene) {
+            let planet = planets[currentPlanetIndex];
+            planetImage = scene.add.image(400, 200, planet.imgKey).setDisplaySize(200, 200);
+            questionText = scene.add.text(400, 400, planet.question, { font: '24px Arial', fill: '#ffffff' }).setOrigin(0.5);
+
+            let answers = Phaser.Utils.Array.Shuffle(planets.map(p => p.name));
+            answers.forEach((answer, index) => {
+                let btn = scene.add.text(400, 450 + index * 40, answer, { font: '24px Arial', fill: '#ffffff' }).setOrigin(0.5);
+                btn.setInteractive();
+                btn.on('pointerdown', () => checkAnswer(scene, answer));
+            });
+        }
+
+        function checkAnswer(scene, selectedAnswer) {
+            let correctAnswer = planets[currentPlanetIndex].answer;
+            if (selectedAnswer === correctAnswer) {
+                score += 10;
+                scoreText.setText('Puntuación: ' + score);
+            }
+            nextPlanet(scene);
+        }
+
+        function nextPlanet(scene) {
+            questionText.destroy();
+            planetImage.destroy();
+            scene.children.list
+                .filter(child => child.type === 'Text' && child !== scoreText)
+                .forEach(child => child.destroy());
+
+            currentPlanetIndex++;
+            if (currentPlanetIndex < planets.length) {
+                showPlanet(scene);
+            } else {
+                endGame(scene);
+            }
+        }
+
+        function endGame(scene) {
+            scene.add.text(400, 300, '¡Juego Terminado!', { font: '48px Arial', fill: '#ffffff' }).setOrigin(0.5);
+            scene.add.text(400, 400, `Tu Puntuación: ${score}`, { font: '32px Arial', fill: '#ffffff' }).setOrigin(0.5);
+        }
+
+        function update() {}
+
+    </script>
+</body>
+</html>

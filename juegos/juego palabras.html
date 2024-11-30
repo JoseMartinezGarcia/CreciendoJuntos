@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juego de Letras</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        let game = new Phaser.Game(config);
+        let words = ["GATO", "PERRO", "CASA", "SOL", "LUNA"];
+        let shuffledWords;
+        let currentWordIndex = 0;
+        let shuffledWord;
+        let selectedLetters = [];
+        let lettersText = [];
+        let score = 0;
+        let hintImage;
+        let startTime;
+        let startText;
+
+        function preload() {
+            // Cargar fondo y las imágenes de las palabras
+            this.load.image('background', 'assets/fondonum.jpg');
+            this.load.image('gato', 'assets/letras desordenadas/img/gato.jpg');
+            this.load.image('perro', 'assets/letras desordenadas/img/perro.jpg');
+            this.load.image('casa', 'assets/letras desordenadas/img/casa.jpg');
+            this.load.image('sol', 'assets/letras desordenadas/img/sol.jpeg');
+            this.load.image('luna', 'assets/letras desordenadas/img/luna.jpg');
+        }
+
+        function create() {
+            // Añadir la imagen de fondo y ajustarla al tamaño de la pantalla
+            const bg = this.add.image(0, 0, 'background').setOrigin(0, 0);
+            bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
+
+            // Texto de inicio
+            startText = this.add.text(400, 300, 'Haz clic para empezar', { font: '48px Arial', fill: '#ffffff' }).setOrigin(0.5);
+            this.input.once('pointerdown', () => {
+                startText.setVisible(false); // Ocultar el texto de inicio al hacer clic
+                startGame(this);
+            });
+        }
+
+        function startGame(scene) {
+            // Aleatorizar el orden de las palabras en cada partida
+            shuffledWords = Phaser.Utils.Array.Shuffle([...words]);
+
+            // Texto inicial para indicar el puntaje
+            scene.scoreText = scene.add.text(10, 10, 'Puntuación: 0', { font: '32px Arial', fill: '#000' });
+
+            // Crear un espacio para la imagen de la pista y centrarla
+            hintImage = scene.add.image(400, 150, shuffledWords[currentWordIndex].toLowerCase()).setVisible(true);
+            hintImage.setDisplaySize(200, 200);
+
+            // Texto para mostrar letras seleccionadas, ubicado en la parte inferior
+            scene.selectedWordText = scene.add.text(400, 500, '', { font: '64px Comic Sans MS', fill: '#ffffff' }).setOrigin(0.5);
+
+            // Mostrar la primera palabra desordenada
+            loadNextWord(scene);
+        }
+
+        function update() {}
+
+        function loadNextWord(scene) {
+            // Limpiar letras previas
+            lettersText.forEach(letter => letter.destroy());
+            lettersText = [];
+            selectedLetters = [];
+
+            // Reiniciar el texto de la palabra seleccionada
+            scene.selectedWordText.setText('');
+
+            // Cambiar la imagen para la palabra actual
+            let word = shuffledWords[currentWordIndex];
+            hintImage.setTexture(word.toLowerCase());
+            hintImage.setDisplaySize(200, 200);
+
+            // Registrar el tiempo de inicio de esta palabra
+            startTime = scene.time.now;
+
+            // Obtener la palabra y desordenarla
+            shuffledWord = Phaser.Utils.Array.Shuffle(word.split(''));
+
+            // Centrar las letras desordenadas en pantalla
+            const startX = 400 - (shuffledWord.length * 40);
+
+            for (let i = 0; i < shuffledWord.length; i++) {
+                let letter = shuffledWord[i];
+                let letterText = scene.add.text(startX + i * 80, 300, letter, { font: '64px Comic Sans MS', fill: '#ffffff' });
+                letterText.setInteractive();
+
+                // Agregar cada letra como un objeto único para poder seleccionar letras repetidas
+                letterText.letterIndex = i;
+                letterText.on('pointerdown', () => selectLetter(letterText, scene));
+
+                lettersText.push(letterText);
+            }
+        }
+
+        function selectLetter(letterText, scene) {
+            // Evitar seleccionar la misma letra más de una vez
+            if (!selectedLetters.includes(letterText)) {
+                selectedLetters.push(letterText);
+                scene.selectedWordText.setText(selectedLetters.map(letter => letter.text).join(''));
+                letterText.setAlpha(0.5);
+
+                // Comprobar si la palabra está completa
+                if (selectedLetters.length === shuffledWord.length) {
+                    checkWord(scene);
+                }
+            }
+        }
+
+        function checkWord(scene) {
+            let selectedWord = selectedLetters.map(letter => letter.text).join('');
+
+            if (selectedWord === shuffledWords[currentWordIndex]) {
+                const timeTaken = (scene.time.now - startTime) / 1000;
+                let wordScore = Math.max(100 - Math.floor(timeTaken * 10), 10);
+                score += wordScore;
+
+                scene.scoreText.setText('Puntuación: ' + score);
+                currentWordIndex++;
+
+                if (currentWordIndex < shuffledWords.length) {
+                    loadNextWord(scene);
+                } else {
+                    endGame(scene);
+                }
+            } else {
+                scene.selectedWordText.setText('Inténtalo de nuevo');
+                resetSelectedLetters(scene);
+            }
+        }
+
+        function resetSelectedLetters(scene) {
+            selectedLetters = [];
+            scene.selectedWordText.setText('');
+            lettersText.forEach(letter => letter.setAlpha(1));
+        }
+
+        function endGame(scene) {
+            lettersText.forEach(letter => letter.destroy());
+            scene.selectedWordText.setText('¡Juego Terminado!');
+            scene.add.text(400, 400, `Tu Puntuación: ${score}`, { font: '40px Arial', fill: '#0000ff' }).setOrigin(0.5);
+            hintImage.setVisible(false);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>La Búsqueda de Sinónimos y Antónimos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            backgroundColor: "#f0f8ff",
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        let game = new Phaser.Game(config);
+        let words = [
+            { word: "alegría", options: ["tristeza", "felicidad", "burlas"], correct: "felicidad" },
+            { word: "grande", options: ["pequeño", "alto", "enorme"], correct: "enorme" },
+            { word: "rápido", options: ["lento", "veloz", "pesado"], correct: "veloz" },
+            { word: "oscuro", options: ["brillante", "claro", "luminoso"], correct: "brillante" }
+        ];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let wordText, scoreText, optionButtons = [];
+
+        function preload() {
+            this.load.image('background', 'assets/fondonum.jpg');
+        }
+
+        function create() {
+            this.add.image(400, 300, 'background').setDisplaySize(800, 600);
+            scoreText = this.add.text(10, 10, 'Puntuación: 0', { font: '32px Arial', fill: '#ffffff' });
+
+            // Mostrar la primera pregunta
+            showQuestion(this);
+        }
+
+        function showQuestion(scene) {
+            let question = words[currentQuestionIndex];
+
+            // Muestra la pregunta
+            wordText = scene.add.text(400, 150, `¿Cuál es el sinónimo de ${question.word}?`, { font: '32px Arial', fill: '#ffffff' }).setOrigin(0.5);
+
+            // Barajar las opciones
+            let shuffledOptions = Phaser.Utils.Array.Shuffle(question.options);
+            optionButtons = [];
+
+            shuffledOptions.forEach((option, index) => {
+                let button = scene.add.text(400, 250 + index * 60, option, { font: '24px Arial', fill: '#ffffff' }).setOrigin(0.5);
+                button.setInteractive();
+                button.on('pointerdown', () => checkAnswer(scene, option));
+                optionButtons.push(button);
+            });
+        }
+
+        function checkAnswer(scene, selectedOption) {
+            let correctAnswer = words[currentQuestionIndex].correct;
+            if (selectedOption === correctAnswer) {
+                score += 10;
+                scoreText.setText('Puntuación: ' + score);
+            }
+            nextQuestion(scene);
+        }
+
+        function nextQuestion(scene) {
+            // Eliminar los textos de la pregunta y opciones previas
+            wordText.destroy();
+            optionButtons.forEach(button => button.destroy());
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < words.length) {
+                showQuestion(scene);
+            } else {
+                endGame(scene);
+            }
+        }
+
+        function endGame(scene) {
+            scene.add.text(400, 300, '¡Juego Terminado!', { font: '48px Arial', fill: '#000' }).setOrigin(0.5);
+            scene.add.text(400, 400, `Tu Puntuación: ${score}`, { font: '32px Arial', fill: '#000' }).setOrigin(0.5);
+        }
+
+        function update() {}
+
+    </script>
+</body>
+</html>
