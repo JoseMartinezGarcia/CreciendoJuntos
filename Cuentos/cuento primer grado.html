@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Gran Tesoro de la Aldea</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #storyContainer {
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #readButton {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #readButton:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="storyContainer">
+        <h1>El Gran Tesoro de la Aldea</h1>
+        <p>En una pequeña aldea rodeada de montañas, había un árbol mágico llamado el Árbol de los Corazones, que brillaba con mil colores y fortalecía a la comunidad, siempre y cuando vivieran en armonía.</p>
+        <p>Un día, el árbol perdió su luz. El sabio anciano explicó que esto ocurría porque los aldeanos habían olvidado valores como el respeto y la cooperación. Lia, una niña dispuesta a ayudar, propuso organizar un festival para que todos compartieran sus talentos.</p>
+        <p>Samu, un niño tímido que amaba dibujar, al principio dudó de sí mismo. Con el apoyo de Lia, pintó un mural que mostraba la diversidad y la unión de la aldea. Su obra recordó a todos la importancia de valorar a cada persona.</p>
+        <p>Durante el festival, la alegría y el esfuerzo colectivo hicieron que el Árbol de los Corazones volviera a brillar. Desde entonces, la aldea prometió cuidarse mutuamente y mantener los valores que los unían.</p>
+        <p><strong>Fin.</strong></p>
+        <button id="readButton">Leer en voz alta</button>
+    </div>
+
+    <script>
+        const readButton = document.getElementById('readButton');
+        const storyText = document.getElementById('storyContainer').innerText;
+    
+        readButton.addEventListener('click', () => {
+            const synth = window.speechSynthesis;
+            const utterThis = new SpeechSynthesisUtterance(storyText);
+    
+            // Obtener la lista de voces disponibles
+            let voices = synth.getVoices();
+    
+            // Filtrar para seleccionar una voz en español
+            let spanishVoice = voices.find(voice => voice.lang.startsWith('es'));
+    
+            // Si hay una voz en español, usarla
+            if (spanishVoice) {
+                utterThis.voice = spanishVoice;
+            }
+    
+            synth.speak(utterThis);
+        });
+    
+        // Este código asegura que las voces estén cargadas antes de usar speechSynthesis
+        window.speechSynthesis.onvoiceschanged = function() {
+            voices = window.speechSynthesis.getVoices();
+        };
+    </script>
+</body>
+</html>

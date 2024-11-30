@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La promesa de Estrella</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #storyContainer {
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #readButton {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #readButton:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="storyContainer">
+        <h1>El Eco de la Revolución</h1>
+        <p>Era una tarde soleada en el año de 1910, y en el pequeño pueblo de San Pedro, los habitantes se reunían alrededor de la plaza. Había una sensación en el aire de que algo importante estaba por suceder. Entre la multitud, estaba Luis, un niño de ojos vivaces que escuchaba atentamente las conversaciones de los adultos. “¿Por qué todos están tan preocupados?” le preguntó a su abuela.</p>
+        <p>“La gente está cansada, Luis”, le respondió ella mientras observaba a los campesinos y trabajadores. “Hay hambre, injusticia y desigualdad. Los poderosos toman la tierra de los más humildes, y muchos sufren sin poder hacer nada”.</p>
+        <p>Esa noche, Luis escuchó más murmullos en el pueblo. Al día siguiente, hombres y mujeres se reunieron con determinación en sus rostros. Un hombre llamado Francisco I. Madero, que hablaba de democracia y justicia, se había levantado contra el gobierno opresor de Porfirio Díaz. Luis sintió un escalofrío al ver a personas comunes tomar la decisión de cambiar su destino. La Revolución Mexicana había comenzado.</p>
+        <p>Con el paso de los días, las noticias viajaron rápido. Emiliano Zapata, un líder de voz firme y corazón indomable, luchaba por devolver la tierra a quienes la trabajaban. “La tierra es de quienes la hacen producir”, decía Zapata. Luis y su familia escucharon sobre sus hazañas mientras trabajaban en los campos. Para ellos, las palabras de Zapata eran más que promesas; eran esperanza.</p>
+        <p>Con el tiempo, el pueblo de San Pedro vivió la llegada de revolucionarios. Caballos al galope, rostros curtidos por el sol, miradas decididas. Luis se acercó con asombro y miedo, observando a hombres y mujeres dispuestos a darlo todo por un cambio. Los revolucionarios le contaron historias sobre sus familias, sobre el sueño de un México más justo, y aunque muchos no sabían si regresarían a sus hogares, seguían luchando</p>
+        <p>Pasaron los años, y aunque la Revolución tuvo momentos difíciles y no siempre justos, el esfuerzo de aquellos que alzaron la voz dejó marcas imborrables. La gente recuperó tierras, y el país comenzó a transformarse. Luis creció, y cuando le contaba a sus hijos sobre esos días, siempre les recordaba que el cambio y la justicia eran cosas que se ganaban con valor y esfuerzo.</p>
+        <p>“La Revolución nos mostró que juntos podemos ser más fuertes”, les decía. “Nunca olviden lo que ocurrió, porque la historia siempre nos enseña a ser mejores”.</p>
+        <p>Y así, el fuego de la Revolución Mexicana permaneció vivo en la memoria del pueblo, como una lección de lucha y esperanza para construir un futuro más justo.</p>
+        <p><strong>Fin</strong></p>
+        <button id="readButton">Leer en voz alta</button>
+    </div>
+
+    <script>
+        const readButton = document.getElementById('readButton');
+        const storyText = document.getElementById('storyContainer').innerText;
+    
+        readButton.addEventListener('click', () => {
+            const synth = window.speechSynthesis;
+            const utterThis = new SpeechSynthesisUtterance(storyText);
+    
+            // Obtener la lista de voces disponibles
+            let voices = synth.getVoices();
+    
+            // Filtrar para seleccionar una voz en español
+            let spanishVoice = voices.find(voice => voice.lang.startsWith('es'));
+    
+            // Si hay una voz en español, usarla
+            if (spanishVoice) {
+                utterThis.voice = spanishVoice;
+            }
+    
+            synth.speak(utterThis);
+        });
+    
+        // Este código asegura que las voces estén cargadas antes de usar speechSynthesis
+        window.speechSynthesis.onvoiceschanged = function() {
+            voices = window.speechSynthesis.getVoices();
+        };
+    </script>
+
+</body>
+</html>
