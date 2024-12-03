@@ -90,29 +90,45 @@
 <body>
     <div class="menu-container">
         <!-- Botón de Ciencias -->
-        <div class="menu-item" onclick="toggleDropdown()">
+        <div class="menu-item" onclick="toggleDropdownCiencias()">
             <img src="BtnMenu/Ciencias.png" alt="Ciencias">
         </div>
 
-        <!-- Otros botones -->
-        <div class="menu-item" onclick="window.location.href='juegos/numeros 1-10.html'">
+        <!-- Botón de Matemáticas -->
+        <div class="menu-item" onclick="toggleDropdownMatematicas()">
             <img src="BtnMenu/Matemticas.png" alt="Matemáticas">
         </div>
+
+        <!-- Botón de Español -->
         <div class="menu-item" onclick="window.location.href='juegos/alfabeto.html'">
             <img src="BtnMenu/Español.png" alt="Español">
         </div>
     </div>
 
-    <!-- Menú Desplegable -->
-    <div class="dropdown" id="menuDropdown">
+    <!-- Dropdown para Ciencias -->
+    <div class="dropdown" id="menuDropdownCiencias">
         <div class="dropdown-item" onclick="window.location.href='juegos/memoramaciencias.html'">
             Memorama
-            <div class="dropdown-text">Un memorama educativo donde, al emparejar cartas de ciencias naturales, recibes información sobre cada tema.?</div>
+            <div class="dropdown-text">Un memorama educativo donde, al emparejar cartas de ciencias naturales, recibes información sobre cada tema.</div>
         </div>
+    </div>
+
+    <!-- Dropdown para Matemáticas -->
+    <div class="dropdown" id="menuDropdownMatematicas">
+        <div class="dropdown-item" onclick="window.location.href='juegos/memoramamatematicas.html'">
+            Numeros
+            <div class="dropdown-text">Un juego de matemáticas donde presionas los números en orden ascendente rápidamente.</div>
+        </div>
+    </div>
 
     <script>
-        function toggleDropdown() {
-            const dropdown = document.getElementById('menuDropdown');
+        function toggleDropdownCiencias() {
+            const dropdown = document.getElementById('menuDropdownCiencias');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleDropdownMatematicas() {
+            const dropdown = document.getElementById('menuDropdownMatematicas');
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
     </script>
