@@ -57,6 +57,7 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             padding: 15px;
             z-index: 100;
+            width: 250px;
         }
 
         .dropdown-item {
@@ -85,6 +86,21 @@
         .dropdown-item:hover .dropdown-text {
             display: block;
         }
+
+        /* Estilo para la cruz */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #888;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +123,7 @@
 
     <!-- Dropdown para Ciencias -->
     <div class="dropdown" id="menuDropdownCiencias">
+        <span class="close-btn" onclick="closeDropdown(event, 'Ciencias')">&times;</span>
         <div class="dropdown-item" onclick="window.location.href='juegos/memoramaciencias.html'">
             Memorama
             <div class="dropdown-text">Un memorama educativo donde, al emparejar cartas de ciencias naturales, recibes información sobre cada tema.</div>
@@ -115,17 +132,19 @@
 
     <!-- Dropdown para Matemáticas -->
     <div class="dropdown" id="menuDropdownMatematicas">
+        <span class="close-btn" onclick="closeDropdown(event, 'Matematicas')">&times;</span>
         <div class="dropdown-item" onclick="window.location.href='juegos/memoramamatematicas.html'">
             Numeros
-            <div class="dropdown-text">Un juego de matemáticas donde presionas los números en orden ascendente rápidamente.</div>
+            <div class="dropdown-text">Se el mas rapido siguiendo el orden de los numeros.</div>
         </div>
     </div>
 
     <!-- Dropdown para Español -->
     <div class="dropdown" id="menuDropdownEspañol">
+        <span class="close-btn" onclick="closeDropdown(event, 'Español')">&times;</span>
         <div class="dropdown-item" onclick="window.location.href='juegos/memoramaespanol.html'">
             Alfabeto
-            <div class="dropdown-text">Escoge la letra correcta y acumula puntos.</div>
+            <div class="dropdown-text">Escoge la letra correspondiente segun la imagen.</div>
         </div>
     </div>
 
@@ -139,6 +158,13 @@
             // Abrir el menú correspondiente
             const dropdown = document.getElementById('menuDropdown' + subject);
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Función para cerrar el menú con la cruz
+        function closeDropdown(event, subject) {
+            event.stopPropagation();  // Evita que el evento se propague al menú
+            const dropdown = document.getElementById('menuDropdown' + subject);
+            dropdown.style.display = 'none';  // Cierra el menú
         }
     </script>
 </body>
