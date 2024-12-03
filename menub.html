@@ -12,9 +12,9 @@
             height: 100vh;
             margin: 0;
             background-image: url('Fondos/FONDO.png'); /* Ruta de la imagen */
-            background-size: cover; /* Hace que la imagen cubra toda la pantalla */
-            background-position: center; /* Centra la imagen */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat; 
         }
 
         .menu-container {
@@ -44,17 +44,128 @@
             object-fit: cover;
             border-radius: 20px;
         }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 300px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            z-index: 100;
+            width: 250px;
+        }
+
+        .dropdown-item {
+            margin: 10px 0;
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            position: relative;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .dropdown-item:hover {
+            background-color: #e0e0e0;
+        }
+
+        .dropdown-text {
+            display: none;
+            margin-top: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .dropdown-item:hover .dropdown-text {
+            display: block;
+        }
+
+        /* Estilo para la cruz */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #888;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
     </style>
 </head>
 <body>
-        <div class="menu-item" onclick="window.location.href='juegos/sistema solar.html'">
-            <img src="" alt="Ciencias">
+    <div class="menu-container">
+        <!-- Botón de Ciencias -->
+        <div class="menu-item" onclick="toggleDropdown('Ciencias')">
+            <img src="BtnMenu/Ciencias.png" alt="Ciencias">
         </div>
-        <div class="menu-item" onclick="window.location.href='juegos/sinonimos y antonimos.html'">
-            <img src="" alt="Matemáticas">
+
+        <!-- Botón de Matemáticas -->
+        <div class="menu-item" onclick="toggleDropdown('Matematicas')">
+            <img src="BtnMenu/Matemticas.png" alt="Matemáticas">
         </div>
-        <div class="menu-item" onclick="window.location.href='Cuentos/Cuento tercer grado.html'">
-            <img src="" alt="Arte">
+
+        <!-- Botón de Español -->
+        <div class="menu-item" onclick="toggleDropdown('Español')">
+            <img src="BtnMenu/Español.png" alt="Español">
+        </div>
     </div>
+
+    <!-- Dropdown para Ciencias -->
+    <div class="dropdown" id="menuDropdownCiencias">
+        <span class="close-btn" onclick="closeDropdown(event, 'Ciencias')">&times;</span>
+        <div class="dropdown-item" onclick="window.location.href='juegos/sistema solar.html'">
+            Trivia sitema solar
+            <div class="dropdown-text">Trivia para saber sobre nuestro sistema solar</div>
+        </div>
+    </div>
+
+    <!-- Dropdown para Matemáticas -->
+    <div class="dropdown" id="menuDropdownMatematicas">
+        <span class="close-btn" onclick="closeDropdown(event, 'Matematicas')">&times;</span>
+        <div class="dropdown-item" onclick="window.location.href='juegos/cuarto.html'">
+            Matematicas
+            <div class="dropdown-text">Trivias sobre temas matematicos simples</div>
+        </div>
+    </div>
+
+    <!-- Dropdown para Español -->
+    <div class="dropdown" id="menuDropdownEspañol">
+        <span class="close-btn" onclick="closeDropdown(event, 'Español')">&times;</span>
+        <div class="dropdown-item" onclick="window.location.href='Juegos/sinonimos y antonimos.html'">
+            Trivia sinonimos y antonimos
+            <div class="dropdown-text">Aprende sobre los sinonimos y antonimos</div>
+        </div>
+    </div>
+
+    <script>
+        // Función que maneja el cambio entre menús
+        function toggleDropdown(subject) {
+            // Cerrar todos los menús
+            const allDropdowns = document.querySelectorAll('.dropdown');
+            allDropdowns.forEach(dropdown => dropdown.style.display = 'none');
+
+            // Abrir el menú correspondiente
+            const dropdown = document.getElementById('menuDropdown' + subject);
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Función para cerrar el menú con la cruz
+        function closeDropdown(event, subject) {
+            event.stopPropagation();  // Evita que el evento se propague al menú
+            const dropdown = document.getElementById('menuDropdown' + subject);
+            dropdown.style.display = 'none';  // Cierra el menú
+        }
+    </script>
 </body>
 </html>
