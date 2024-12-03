@@ -7,136 +7,176 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
-            background-image: url('Fondos/FONDO.png'); /* Aquí esta tu fondo original */
-            background-size: cover; /* Asegura que el fondo cubra toda la pantalla */
-            background-position: center; /* Centra el fondo */
-            font-family: 'Monospace', monospace; /* Cambiado a Monospace */
+            background-image: url('Fondos/FONDO.png');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Monospace', monospace;
             color: #333;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 100vh; /* Asegura que el cuerpo ocupe al menos la altura de la ventana */
+            min-height: 100vh;
         }
 
         header {
             display: flex;
             align-items: center;
             padding: 5px;
-            background-color: rgba(128, 128, 128, 0.5); /* Gris con 50% de transparencia */
-            backdrop-filter: blur(10px); /* Difuminado del fondo detrás del header */
+            background-color: rgba(128, 128, 128, 0.5);
+            backdrop-filter: blur(10px);
             justify-content: space-between;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar un poco de profundidad */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .auth-container {
-            display: flex; /* Usar flexbox para alinear los enlaces */
-            gap: 15px; /* Espacio entre enlaces */
-            margin-left: auto; /* Empuja el contenedor a la derecha */
+            display: flex;
+            gap: 15px;
+            margin-left: auto;
         }
 
         .search-container {
             display: flex;
-            justify-content: flex-start; /* Alinea los elementos a la izquierda dentro del contenedor */
-            gap: 10px; /* Espacio entre el input y el botón de búsqueda */
+            gap: 10px;
         }
 
         .search-input {
-            padding: 8px; /* Espaciado interno */
-            border: none; /* Sin borde */
-            border-radius: 15px; /* Esquinas redondeadas */
-            outline: none; /* Sin contorno al seleccionar */
-            font-size: 1rem; /* Tamaño de fuente */
-            width: 200px; /* Ancho del cuadro de búsqueda */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+            padding: 8px;
+            border: none;
+            border-radius: 15px;
+            outline: none;
+            font-size: 1rem;
+            width: 200px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .search-button {
-            background-color: #FF6F61; /* Color del botón de búsqueda */
-            color: white; /* Color del texto del botón */
-            border: none; /* Sin borde */
-            border-radius: 15px; /* Esquinas redondeadas */
-            padding: 8px 12px; /* Espaciado interno */
-            cursor: pointer; /* Cambiar el cursor al pasar el mouse */
+            background-color: #FF6F61;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 8px 12px;
+            cursor: pointer;
         }
 
-        .options-container {
-            display: flex; /* Usar flexbox para alinear horizontalmente */
-            justify-content: flex-start; /* Alinear las opciones a la izquierda */
-            gap: 20px; /* Espacio entre las opciones */
-            flex-grow: 1; /* Permite que el contenedor ocupe espacio adicional */
-            margin-left: 200px; /* Mueve las secciones a la derecha */
+        .centered-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
         }
 
-        .dropdown {
-            display: none; /* Oculto por defecto */
-            position: absolute; /* Para que el menú se posicione sobre otros elementos */
-            top: 100%; /* Abajo del texto */
-            left: 50%; /* Centrado */
-            transform: translateX(-50%); /* Centra el menú */
-            background-color: white; /* Fondo blanco */
-            border-radius: 8px; /* Esquinas redondeadas */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
-            z-index: 1; /* Asegura que se superponga a otros elementos */
+        .image-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
-        .dropdown button {
-            width: 100%; /* Botón ocupa todo el ancho */
-            padding: 10px; /* Espaciado interno */
-            border: none; /* Sin borde */
-            background-color: transparent; /* Fondo transparente */
-            text-align: left; /* Alinear texto a la izquierda */
-            cursor: pointer; /* Cambiar el cursor al pasar el mouse */
-        }
-
-        .dropdown button:hover {
-            background-color: #f0f8ff; /* Cambia el fondo al pasar el mouse */
+        .image-button:hover {
+            transform: scale(1.1);
         }
 
         footer {
             margin-top: 30px;
-            background-color: #FF6F61; /* Color del pie de página */
-            color: white; /* Color del texto en el pie de página */
+            background-color: #FF6F61;
+            color: white;
             padding: 10px;
-            text-align: center; /* Centra el texto en el pie de página */
+            text-align: center;
         }
 
-        footer p {
+        .modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-content button {
+            background-color: #FF6F61;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             font-size: 1rem;
         }
 
-        /* Contenedor para centrar el botón de imagen en el viewport */
-        .centered-container {
-            display: flex;
-            justify-content: space-between; /* Distribuye los botones con espacio entre ellos */
-            align-items: center; /* Alinea los botones verticalmente */
-            width: 100%; /* Ajusta el ancho para ocupar todo el espacio disponible */
-            padding: 20px; /* Espaciado alrededor de los botones */
-        }
-
-        .image-button {
-            border: none; /* Sin borde */
-            background: none; /* Sin fondo */
-            cursor: pointer; /* Cambiar el cursor al pasar el mouse */
-            transition: transform 0.3s ease; /* Agrega una transición suave */
-        }
-
-        .image-button:hover {
-            transform: scale(1.1); /* Aumenta el tamaño al pasar el mouse */
-        }
-
-        .image-btn {
-            height: auto; /* Mantiene la proporción de la imagen */
+        .modal-content button:hover {
+            background-color: #e55a50;
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="auth-container">
-        </div>
-        <div class="search-container">
-        </div>
+        <div class="auth-container"></div>
+        <div class="search-container"></div>
     </header>    
 
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h2>Iniciar Sesión</h2>
+            <form id="loginForm">
+                <label for="studentName">Nombre del Alumno:</label>
+                <input type="text" id="studentName" name="studentName" required placeholder="Ingresa el nombre del alumno">
+                
+                <label for="parentEmail">Correo del Padre o Tutor:</label>
+                <input type="email" id="parentEmail" name="parentEmail" required placeholder="Correo del padre o tutor">
+                
+                <button type="submit">Acceder</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('loginModal').style.display = 'flex';
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const studentName = document.getElementById('studentName').value;
+            const parentEmail = document.getElementById('parentEmail').value;
+            if (studentName && parentEmail) {
+                alert(`Bienvenido ${studentName}`);
+                document.getElementById('loginModal').style.display = 'none';
+            }
+        });
+
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('loginModal').style.display = 'none';
+            }
+        });
+    </script>
+    
     <div class="centered-container">
         <a href="Menuf.html">
             <button class="image-button">
