@@ -90,12 +90,12 @@
 <body>
     <div class="menu-container">
         <!-- Botón de Ciencias -->
-        <div class="menu-item" onclick="toggleDropdownCiencias()">
+        <div class="menu-item" onclick="toggleDropdown('Ciencias')">
             <img src="BtnMenu/Ciencias.png" alt="Ciencias">
         </div>
 
         <!-- Botón de Matemáticas -->
-        <div class="menu-item" onclick="toggleDropdownMatematicas()">
+        <div class="menu-item" onclick="toggleDropdown('Matematicas')">
             <img src="BtnMenu/Matemticas.png" alt="Matemáticas">
         </div>
 
@@ -116,19 +116,20 @@
     <!-- Dropdown para Matemáticas -->
     <div class="dropdown" id="menuDropdownMatematicas">
         <div class="dropdown-item" onclick="window.location.href='juegos/memoramamatematicas.html'">
-            Numeros
-            <div class="dropdown-text">Un juego de matemáticas donde presionas los números en orden ascendente rápidamente.</div>
+            Memorama Matemático
+            <div class="dropdown-text">Un memorama educativo con operaciones y números.</div>
         </div>
     </div>
 
     <script>
-        function toggleDropdownCiencias() {
-            const dropdown = document.getElementById('menuDropdownCiencias');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
+        // Función que maneja el cambio entre menús
+        function toggleDropdown(subject) {
+            // Cerrar todos los menús
+            const allDropdowns = document.querySelectorAll('.dropdown');
+            allDropdowns.forEach(dropdown => dropdown.style.display = 'none');
 
-        function toggleDropdownMatematicas() {
-            const dropdown = document.getElementById('menuDropdownMatematicas');
+            // Abrir el menú correspondiente
+            const dropdown = document.getElementById('menuDropdown' + subject);
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
     </script>
