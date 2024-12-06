@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Emparejar Letras y Sonidos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+</head>
+<body>
+<script>
+    const config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+    let game = new Phaser.Game(config);
+    let currentLetter;
+    let alphabet = ['a', 'e', 'i', 'o', 'u'];
+    let letterImages = {}; // Para almacenar las imágenes asociadas a cada letra
+    let correctSound, wrongSound, feedbackText, scoreText, startText, endText;
+    let score = 0;
+    let timer;
+    let gameStarted = false;
+    let optionTexts = [];
+    let roundCount = 0;
+    const maxRounds = 5;
+    let currentImage;
+    let startTime;
+    let streak = 0;
+    let multiplier = 1;
+    let wrongStreak = 0;
+    let roundPerfect = true; // Para rastrear si la ronda es perfecta
+
+    function preload() {
+        this.load.image('background', 'assets/fondonum.jpg');
+        
+        alphabet.forEach(letter => {
+            this.load.audio(letter, `assets/Alfabeto/aud/alfabeto_letra_${letter.toLowerCase()}.mp3`);
+            this.load.image(letter, `assets/Alfabeto/img/${letter}.jpg`); // Cargar imagen para cada letra
+        });
+        
+        this.load.audio('correct', 'assets/Alfabeto/aud/546081__stavsounds__correct3.wav');
+        this.load.audio('wrong', 'assets/Alfabeto/aud/529384__beetlemuse__invalid-selection.wav');
+    }
+
+    function create() {
+        this.add.image(400, 300, 'background').setDisplaySize(800, 600);
+
+        correctSound = this.sound.add('correct');
+        wrongSound = this.sound.add('wrong');
+
+        feedbackText = this.add.text(400, 100, '', { font: '48px Arial', fill: '#ffffff' }).setOrigin(0.5);
+        scoreText = this.add.text(10, 10, 'Puntuación: 0', { font: '32px Arial', fill: '#ffffff' });
+        endText = this.add.text(400, 300, '', { font: '32px Arial', fill: '#ff0000' }).setOrigin(0.5).setVisible(false);
+
+        startText = this.add.text(400, 300, 'Haz clic para empezar', { font: '48px Arial', fill: '#ffffff' }).setOrigin(0.5);
+        this.input.once('pointerdown', () => {
+            startText.setVisible(false);
+            gameStarted = true;
+            startRound(this);
+        });
+    }
+
+    function update() {}
+
+    function startRound(scene) {
+        if (!gameStarted || roundCount >= maxRounds) return;
+
+        feedbackText.setText('');
+        currentLetter = Phaser.Utils.Array.GetRandom(alphabet);
+        scene.sound.play(currentLetter);
+
+        optionTexts.forEach(letterText => letterText.destroy());
+        if (currentImage) currentImage.destroy();
+        optionTexts = [];
+
+        currentImage = scene.add.image(400, 200, currentLetter).setDisplaySize(150, 150);
+
+        let options = generateOptions(currentLetter);
+        const style = { font: '64px Arial', fill: '#ffffff' };
+        let xPosition = 200;
+
+        options.forEach(letter => {
+            let letterText = scene.add.text(xPosition, 400, letter, style).setInteractive();
+            letterText.setStyle({ backgroundColor: '' });
+            letterText.on('pointerdown', () => {
+                if (gameStarted) checkAnswer(letterText, scene);
+            });
+            optionTexts.push(letterText);
+            xPosition += 150;
+        });
+
+        if (timer) timer.remove(false);
+        timer = scene.time.addEvent({
+            delay: 10000,
+            callback: () => {
+                feedbackText.setText('¡Tiempo agotado!');
+                wrongSound.play();
+                endRound(scene);
+            }
+        });
+
+        startTime = scene.time.now;
+        roundPerfect = true;
+    }
+
+    function generateOptions(correctLetter) {
+        let options = [correctLetter];
+        while (options.length < 3) {
+            let randomLetter = Phaser.Utils.Array.GetRandom(alphabet);
+            if (!options.includes(randomLetter)) {
+                options.push(randomLetter);
+            }
+        }
+        return Phaser.Utils.Array.Shuffle(options);
+    }
+
+    function checkAnswer(letterText, scene) {
+        let responseTime = scene.time.now - startTime;
+
+        if (letterText.text === currentLetter) {
+            let points = 10;
+
+            // Bonificación por respuesta rápida
+            if (responseTime <= 3000) {
+                points += 3;
+            } else if (responseTime <= 5000) {
+                points += 1;
+            }
+
+            // Bonificación de racha, pero con menor incremento
+            streak++;
+            multiplier = 1 + Math.floor(streak / 5); // Aumenta cada 5 respuestas correctas
+            points *= multiplier;
+
+            // Límite máximo de puntos por respuesta
+            points = Math.min(points, 20);
+
+            score += points;
+            wrongStreak = 0;
+
+            letterText.setColor('#00ff00');
+            roundPerfect = true;
+
+            scene.time.delayedCall(1000, () => {
+                endRound(scene);
+            });
+        } else {
+            // Penalización progresiva
+            streak = 0;
+            multiplier = 1;
+            wrongStreak++;
+            roundPerfect = false;
+
+            let penalty = 5 + wrongStreak * 2; // Penalización que aumenta con cada error
+
+            score -= penalty;
+            letterText.setColor('#ff0000');
+        }
+        scoreText.setText('Puntuación: ' + score);
+    }
+
+    function endRound(scene) {
+        roundCount++;
+        scoreText.setText('Puntuación: ' + score);
+
+        // Bonificación por ronda perfecta
+        if (roundPerfect) {
+            score += 20;
+        }
+
+        if (roundCount >= maxRounds) {
+            endText.setText('¡Juego Terminado! Puntuación final: ' + score);
+            endText.setVisible(true);
+            gameStarted = false;
+        } else {
+            scene.time.delayedCall(2000, () => startRound(scene));
+        }
+    }
+</script>
+</body>
+</html>
