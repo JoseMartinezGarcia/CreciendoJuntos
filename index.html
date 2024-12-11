@@ -6,6 +6,7 @@
     <title>Stotte</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* Estilos Generales */
         body {
             background-image: url('Fondos/FONDO.png');
             background-size: cover;
@@ -16,75 +17,46 @@
             flex-direction: column;
             justify-content: space-between;
             min-height: 100vh;
+            margin: 0;
         }
 
         header {
             display: flex;
             align-items: center;
-            padding: 5px;
+            justify-content: space-between;
+            padding: 10px;
             background-color: rgba(128, 128, 128, 0.5);
             backdrop-filter: blur(10px);
-            justify-content: space-between;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .auth-container {
-            display: flex;
-            gap: 15px;
-            margin-left: auto;
-        }
-
-        .search-container {
-            display: flex;
-            gap: 10px;
-        }
-
-        .search-input {
-            padding: 8px;
-            border: none;
-            border-radius: 15px;
-            outline: none;
-            font-size: 1rem;
-            width: 200px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .search-button {
-            background-color: #FF6F61;
-            color: white;
-            border: none;
-            border-radius: 15px;
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-
+        /* Contenedor de Botones */
         .centered-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
             padding: 20px;
         }
 
         .image-button {
             border: none;
-            background: none;
+            background: none; /* Sin fondo cuadrado gris */
             cursor: pointer;
             transition: transform 0.3s ease;
         }
 
-        .image-button:hover {
-            transform: scale(1.1);
+        .image-button img {
+            width: 150px; /* Tamaño base más grande */
+            height: auto;
+            transition: transform 0.3s ease;
         }
 
-        footer {
-            margin-top: 30px;
-            background-color: #FF6F61;
-            color: white;
-            padding: 10px;
-            text-align: center;
+        .image-button:hover img {
+            transform: scale(1.2); /* Efecto de escala al pasar el cursor */
         }
 
+        /* Modal */
         .modal {
             display: flex;
             position: fixed;
@@ -95,6 +67,7 @@
             background-color: rgba(0, 0, 0, 0.5);
             align-items: center;
             justify-content: center;
+            z-index: 1000;
         }
 
         .modal-content {
@@ -102,6 +75,8 @@
             padding: 20px;
             border-radius: 10px;
             text-align: center;
+            width: 90%;
+            max-width: 400px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
@@ -126,6 +101,34 @@
         .modal-content button:hover {
             background-color: #e55a50;
         }
+
+        footer {
+            background-color: #FF6F61;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .image-button img {
+                width: 120px; /* Tamaño de los botones en tablets */
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .image-button img {
+                width: 90px; /* Tamaño de los botones en móviles */
+            }
+
+            .modal-content {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -134,6 +137,7 @@
         <div class="search-container"></div>
     </header>    
 
+    <!-- Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <h2>Iniciar Sesión</h2>
@@ -149,6 +153,39 @@
         </div>
     </div>
     
+    <!-- Contenedor de Imágenes -->
+    <div class="centered-container">
+        <a href="Menuf.html">
+            <button class="image-button">
+                <img src="Botones/JUPITER.png" alt="Júpiter">
+            </button>
+        </a>
+        <a href="Menud.html">
+            <button class="image-button">
+                <img src="Botones/TIERRA.png" alt="Tierra">
+            </button>
+        </a>
+        <a href="menuc.html">
+            <button class="image-button">
+                <img src="Botones/VENUS.png" alt="Venus">
+            </button>
+        </a>
+        <a href="menub.html">
+            <button class="image-button">
+                <img src="Botones/MERCURIO.png" alt="Mercurio">
+            </button>
+        </a>
+        <a href="menua.html">
+            <button class="image-button">
+                <img src="Botones/SOL.png" alt="Sol">
+            </button>
+        </a>
+    </div>
+    
+    <footer>
+        <p>© 2025 Stotte. Todos los derechos reservados.</p>
+    </footer>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('loginModal').style.display = 'flex';
@@ -176,37 +213,5 @@
             }
         });
     </script>
-    
-    <div class="centered-container">
-        <a href="Menuf.html">
-            <button class="image-button">
-                <img src="Botones/JUPITER.png" alt="Júpiter" class="image-btn">
-            </button>
-        </a>
-        <a href="Menud.html">
-            <button class="image-button">
-                <img src="Botones/TIERRA.png" alt="Tierra" class="image-btn">
-            </button>
-        </a>
-        <a href="menuc.html">
-            <button class="image-button">
-                <img src="Botones/VENUS.png" alt="Venus" class="image-btn">
-            </button>
-        </a>
-        <a href="menub.html">
-            <button class="image-button">
-                <img src="Botones/MERCURIO.png" alt="Mercurio" class="image-btn">
-            </button>
-        </a>
-        <a href="menua.html">
-            <button class="image-button">
-                <img src="Botones/SOL.png" alt="Sol" class="image-btn">
-            </button>
-        </a>
-    </div>
-    
-    <footer>
-        <p>© 2025 Stotte. Todos los derechos reservados.</p>
-    </footer>
 </body>
 </html>
