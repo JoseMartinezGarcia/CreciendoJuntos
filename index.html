@@ -3,215 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stotte</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Stotte aprendizaje divertido</title>
     <style>
-        /* Estilos Generales */
         body {
-            background-image: url('Fondos/FONDO.png');
-            background-size: cover;
-            background-position: center;
-            font-family: 'Monospace', monospace;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px;
-            background-color: rgba(128, 128, 128, 0.5);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Contenedor de Botones */
-        .centered-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .image-button {
-            border: none;
-            background: none; /* Sin fondo cuadrado gris */
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .image-button img {
-            width: 150px; /* Tamaño base más grande */
-            height: auto;
-            transition: transform 0.3s ease;
-        }
-
-        .image-button:hover img {
-            transform: scale(1.2); /* Efecto de escala al pasar el cursor */
-        }
-
-        /* Modal */
-        .modal {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .modal-content button {
-            background-color: #FF6F61;
+            background-color: #008080;
             color: white;
             padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
         }
 
-        .modal-content button:hover {
-            background-color: #e55a50;
+        header img {
+            height: 50px;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .main-container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .category {
+            position: relative;
+            width: 200px; /* Tamaño por defecto */
+            height: 200px; /* Tamaño por defecto */
+            overflow: hidden;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .category:hover {
+            transform: scale(1.1);
+        }
+
+        .category button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .category img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .category p {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
         }
 
         footer {
-            background-color: #FF6F61;
+            background-color: #008080;
             color: white;
-            padding: 10px;
             text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
 
-        /* Responsive Styles */
-        @media screen and (max-width: 768px) {
-            .image-button img {
-                width: 120px; /* Tamaño de los botones en tablets */
+        /* Estilos para pantallas muy pequeñas (móviles en modo vertical) */
+        @media (max-width: 480px) {
+            .categories {
+                flex-direction: row; /* Mantener en fila */
+                gap: 10px; /* Ajustar el espacio entre los botones */
+                justify-content: space-around; /* Distribuir los botones en filas */
             }
 
-            .modal-content {
-                width: 95%;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .image-button img {
-                width: 90px; /* Tamaño de los botones en móviles */
+            .category {
+                width: 120px; /* Reducir aún más el tamaño de los botones */
+                height: 120px; /* Reducir aún más el tamaño de los botones */
             }
 
-            .modal-content {
-                padding: 15px;
+            .category p {
+                font-size: 12px; /* Reducir el tamaño del texto */
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="auth-container"></div>
-        <div class="search-container"></div>
-    </header>    
+        <img src="Logos/LogoStotte.png" alt="Logo">
+        <nav>
+            <a href="#">Iniciar sesión</a>
+            <a href="#">Suscribirse</a>
+        </nav>
+    </header>
 
-    <!-- Modal -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <h2>Iniciar Sesión</h2>
-            <form id="loginForm">
-                <label for="studentName">Nombre del Alumno:</label>
-                <input type="text" id="studentName" name="studentName" required placeholder="Ingresa el nombre del alumno">
-                
-                <label for="parentEmail">Correo del Padre o Tutor:</label>
-                <input type="email" id="parentEmail" name="parentEmail" required placeholder="Correo del padre o tutor">
-                
-                <button type="submit">Acceder</button>
-            </form>
+    <div class="main-container">
+        <h1>Aprendizaje divertido</h1>
+        <p>¡Empieza a divertirte apoyandote en materias mientras juegas!</p>
+        <div class="categories">
+            <div class="category">
+                <button><img src="BtnIndex/Ciencias.png" alt="Ciencia"></button>
+            </div>
+            <div class="category">
+                <button><img src="BtnIndex/Matematicas.png" alt="Ciencias Sociales"></button>
+            </div>
+            <div class="category">
+                <button><img src="BtnIndex/Español.png" alt="Matemáticas"></button>
+            </div>
+            <div class="category">
+                <button><img src="BtnIndex/Etica.png" alt="Salud"></button>
+            </div>
+            <div class="category">
+                <button><img src="BtnIndex/Arte.png" alt="Tecnología"></button>
+            </div>
         </div>
     </div>
-    
-    <!-- Contenedor de Imágenes -->
-    <div class="centered-container">
-        <a href="Menuf.html">
-            <button class="image-button">
-                <img src="Botones/JUPITER.png" alt="Júpiter">
-            </button>
-        </a>
-        <a href="Menud.html">
-            <button class="image-button">
-                <img src="Botones/TIERRA.png" alt="Tierra">
-            </button>
-        </a>
-        <a href="menuc.html">
-            <button class="image-button">
-                <img src="Botones/VENUS.png" alt="Venus">
-            </button>
-        </a>
-        <a href="menub.html">
-            <button class="image-button">
-                <img src="Botones/MERCURIO.png" alt="Mercurio">
-            </button>
-        </a>
-        <a href="menua.html">
-            <button class="image-button">
-                <img src="Botones/SOL.png" alt="Sol">
-            </button>
-        </a>
-    </div>
-    
+
     <footer>
-        <p>© 2025 Stotte. Todos los derechos reservados.</p>
+        &copy; 2024 Stotte. Todos los derechos reservados.
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('loginModal').style.display = 'flex';
-        });
-
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const studentName = document.getElementById('studentName').value;
-            const parentEmail = document.getElementById('parentEmail').value;
-            if (studentName && parentEmail) {
-                alert(`Bienvenido ${studentName}`);
-                document.getElementById('loginModal').style.display = 'none';
-            }
-        });
-
-        document.getElementById('loginModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.style.display = 'none';
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.getElementById('loginModal').style.display = 'none';
-            }
-        });
-    </script>
 </body>
 </html>
