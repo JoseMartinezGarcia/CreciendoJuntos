@@ -14,7 +14,6 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: rgba(0, 128, 128, 0.9); /* Color semi-transparente */
     color: white;
     padding: 10px 20px;
 }
