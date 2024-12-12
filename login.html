@@ -14,7 +14,7 @@
             margin: 0;
             background: linear-gradient(135deg, #6a11cb, #2575fc);
             color: #333;
-            overflow: hidden; /* Impide que se muestre el contenido fuera de la ventana */
+            overflow: hidden;
         }
         .login-container {
             text-align: center;
@@ -77,40 +77,66 @@
             margin-right: 10px;
             font-size: 20px;
         }
-        .google .icon {
-            color: #fff;
-        }
-        .facebook .icon {
-            color: #fff;
-        }
-        .apple .icon {
-            color: #fff;
-        }
-        /* Ocultar otros elementos de la página */
-        .content {
-            display: none;
-        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <h1>Iniciar sesión</h1>
         <p>¿No tienes una cuenta? <a href="#">Regístrate</a></p>
-        <button class="button google">
+        <button id="google-login" class="button google">
             <span class="icon">&#x1F4BB;</span> Continuar con Google
         </button>
-        <button class="button facebook">
+        <button id="facebook-login" class="button facebook">
             <span class="icon">&#x1F426;</span> Continuar con Facebook
         </button>
-        <button class="button apple">
+        <button id="apple-login" class="button apple">
             <span class="icon">&#x1F34E;</span> Continuar con Apple
         </button>
     </div>
 
-    <!-- Aquí puedes agregar contenido que esté oculto al principio -->
-    <div class="content">
-        <!-- Contenido adicional de la página -->
-        <p>Otro contenido de la página</p>
-    </div>
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Importar Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCn5_ayb7bUNx_6oRE-ByfCSebHrR6EItk",
+            authDomain: "stote-7a5e2.firebaseapp.com",
+            projectId: "stote-7a5e2",
+            storageBucket: "stote-7a5e2.appspot.com",
+            messagingSenderId: "543349479602",
+            appId: "1:543349479602:web:22f2b9c551f32315d711ab"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        // Google Login
+        document.getElementById('google-login').addEventListener('click', () => {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then(result => alert(`¡Bienvenido, ${result.user.displayName}!`))
+                .catch(error => alert(`Error: ${error.message}`));
+        });
+
+        // Facebook Login
+        document.getElementById('facebook-login').addEventListener('click', () => {
+            const provider = new FacebookAuthProvider();
+            signInWithPopup(auth, provider)
+                .then(result => alert(`¡Bienvenido, ${result.user.displayName}!`))
+                .catch(error => alert(`Error: ${error.message}`));
+        });
+
+        // Apple Login
+        document.getElementById('apple-login').addEventListener('click', () => {
+            const provider = new OAuthProvider('apple.com');
+            signInWithPopup(auth, provider)
+                .then(result => alert(`¡Bienvenido, ${result.user.displayName}!`))
+                .catch(error => alert(`Error: ${error.message}`));
+        });
+    </script>
 </body>
 </html>
