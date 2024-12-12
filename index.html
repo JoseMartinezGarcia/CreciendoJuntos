@@ -52,8 +52,8 @@
 
         .category {
             position: relative;
-            width: 200px; /* Tamaño por defecto */
-            height: 200px; /* Tamaño por defecto */
+            width: 200px;
+            height: 200px;
             overflow: hidden;
             border-radius: 10px;
             transition: transform 0.3s ease;
@@ -76,7 +76,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
         }
 
         .category p {
@@ -99,22 +98,16 @@
             width: 100%;
         }
 
-        /* Estilos para pantallas muy pequeñas (móviles en modo vertical) */
-        @media (max-width: 480px) {
-            .categories {
-                flex-direction: row; /* Mantener en fila */
-                gap: 10px; /* Ajustar el espacio entre los botones */
-                justify-content: space-around; /* Distribuir los botones en filas */
-            }
-
-            .category {
-                width: 120px; /* Reducir aún más el tamaño de los botones */
-                height: 120px; /* Reducir aún más el tamaño de los botones */
-            }
-
-            .category p {
-                font-size: 12px; /* Reducir el tamaño del texto */
-            }
+        /* Botón de Google */
+        #google-login {
+            background-color: #4285F4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -129,28 +122,80 @@
 
     <div class="main-container">
         <h1>Aprendizaje divertido</h1>
-        <p>¡Empieza a divertirte apoyandote en materias mientras juegas!</p>
+        <p>¡Empieza a divertirte apoyándote en materias mientras juegas!</p>
+
+        <!-- Categorías -->
         <div class="categories">
             <div class="category">
-                <a href="juegos/memoramaciencias.html"><button><img src="BtnMenu/Ciencias.png" alt="Ciencia"></button></a>
+                <a href="juegos/memoramaciencias.html">
+                    <button><img src="BtnMenu/Ciencias.png" alt="Ciencia"></button>
+                </a>
             </div>
             <div class="category">
-                <a href="juegos/numeros 1-10.html"><button><img src="BtnMenu/Matemticas.png" alt="Ciencias Sociales"></button></a>
+                <a href="juegos/numeros 1-10.html">
+                    <button><img src="BtnMenu/Matemticas.png" alt="Matemáticas"></button>
+                </a>
             </div>
             <div class="category">
-                <a href="juegos/alfabeto original.html"><button><img src="BtnMenu/Español.png" alt="Matemáticas"></button></a>
+                <a href="juegos/alfabeto original.html">
+                    <button><img src="BtnMenu/Español.png" alt="Español"></button>
+                </a>
             </div>
             <div class="category">
-                <a href="Cuentos/cuento primer grado.html"><button><img src="BtnMenu/Etica.png" alt="Salud"></button></a>
+                <a href="Cuentos/cuento primer grado.html">
+                    <button><img src="BtnMenu/Etica.png" alt="Ética"></button>
+                </a>
             </div>
             <div class="category">
-                <a href="Cuentos/cuento segundo grado.html"><button><img src="BtnMenu/Arte.png" alt="Tecnología"></button></a>
+                <a href="Cuentos/cuento segundo grado.html">
+                    <button><img src="BtnMenu/Arte.png" alt="Arte"></button>
+                </a>
             </div>
         </div>
+
+        <!-- Botón para iniciar sesión con Google -->
+        <button id="google-login">Iniciar sesión con Google</button>
     </div>
 
     <footer>
         &copy; 2024 Stotte. Todos los derechos reservados.
     </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Importar Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCn5_ayb7bUNx_6oRE-ByfCSebHrR6EItk",
+            authDomain: "stote-7a5e2.firebaseapp.com",
+            projectId: "stote-7a5e2",
+            storageBucket: "stote-7a5e2.appspot.com",
+            messagingSenderId: "543349479602",
+            appId: "1:543349479602:web:22f2b9c551f32315d711ab"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const provider = new GoogleAuthProvider();
+
+        // Funcionalidad para iniciar sesión con Google
+        const googleLoginButton = document.getElementById('google-login');
+        googleLoginButton.addEventListener('click', () => {
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    const user = result.user;
+                    alert(`¡Bienvenido, ${user.displayName}!`);
+                    console.log('Usuario autenticado:', user);
+                })
+                .catch((error) => {
+                    console.error('Error al iniciar sesión:', error);
+                    alert('Error al iniciar sesión con Google. Inténtalo de nuevo.');
+                });
+        });
+    </script>
 </body>
 </html>
