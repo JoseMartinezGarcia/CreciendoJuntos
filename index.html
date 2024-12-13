@@ -182,7 +182,6 @@
             <span class="close">&times;</span>
             <h2>Cuentos</h2>
             <ul id="lista-cuentos">
-                <!-- Los cuentos se cargarán aquí -->
             </ul>
         </div>
     </div>
@@ -238,7 +237,7 @@
 
         // Función para cargar los cuentos en el popup
         function cargarCuentos() {
-            listaCuentos.innerHTML = ''; // Limpiar lista antes de agregar cuentos
+            listaCuentos.innerHTML = ''; 
 
             cuentos.forEach(cuento => {
                 const li = document.createElement('li');
@@ -250,7 +249,6 @@
             });
         }
         // se añadio una ventana para cuentos
-        // Abrir el popup de cuentos
         cuentosButton.addEventListener('click', () => {
             popupCuentos.style.display = 'flex';
             cargarCuentos(); // Cargar los cuentos al abrir el popup
