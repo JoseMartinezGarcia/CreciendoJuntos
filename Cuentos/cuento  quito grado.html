@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La promesa de Estrella</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #storyContainer {
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #readButton {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #readButton:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="storyContainer">
+        <h1>El Secreto de los Caminos Perdidos</h1>
+        <p>En el tranquilo pueblo de Tres Valles, vivía un niño llamado Leo que adoraba los mapas antiguos. Su abuelo, un cartógrafo retirado, le contaba historias sobre cómo los mapas podían revelar secretos olvidados y conectar a las personas con su historia. Una tarde, mientras ayudaba al abuelo a limpiar el desván, Leo encontró un mapa misterioso, dibujado a mano y con caminos que parecían entrelazarse y desaparecer.</p>
+        <p>“Ese mapa es especial”, le dijo su abuelo con voz solemne. “Fue creado por viajeros de muchos años atrás, pero nadie ha logrado descifrar sus caminos. Dicen que quien lo haga, comprenderá la verdadera conexión entre los pueblos de México y más allá”.</p>
+        <p>Leo no pudo resistir el reto. Decidido, se llevó el mapa y comenzó su investigación. Usó otros mapas y libros de la biblioteca del abuelo para comparar ríos, montañas y valles. Pronto descubrió algo sorprendente: el mapa mostraba rutas antiguas de comercio y caminos indígenas que unían a pueblos lejanos. Estas rutas cruzaban desiertos, selvas y montañas, permitiendo el intercambio de culturas, alimentos e ideas.</p>
+        <p>Con cada descubrimiento, Leo sentía cómo la historia cobraba vida a través de las líneas del mapa. Al recorrer algunos de estos caminos con su abuelo, entendió que la cartografía no solo mostraba lugares, sino que contaba la historia de cómo la gente se unía, adaptaba y crecía. Leo se convirtió en el “Guardián de los Caminos Perdidos”, prometiendo compartir el legado de conexión que los mapas guardaban para todos.</p>
+        <p><strong>Fin</strong></p>
+        <button id="readButton">Leer en voz alta</button>
+    </div>
+
+    <script>
+        const readButton = document.getElementById('readButton');
+        const storyText = document.getElementById('storyContainer').innerText;
+    
+        readButton.addEventListener('click', () => {
+            const synth = window.speechSynthesis;
+            const utterThis = new SpeechSynthesisUtterance(storyText);
+    
+            // Obtener la lista de voces disponibles
+            let voices = synth.getVoices();
+    
+            // Filtrar para seleccionar una voz en español
+            let spanishVoice = voices.find(voice => voice.lang.startsWith('es'));
+    
+            // Si hay una voz en español, usarla
+            if (spanishVoice) {
+                utterThis.voice = spanishVoice;
+            }
+    
+            synth.speak(utterThis);
+        });
+    
+        // Este código asegura que las voces estén cargadas antes de usar speechSynthesis
+        window.speechSynthesis.onvoiceschanged = function() {
+            voices = window.speechSynthesis.getVoices();
+        };
+    </script>
+
+</body>
+</html>
