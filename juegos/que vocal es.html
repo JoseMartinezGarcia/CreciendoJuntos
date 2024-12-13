@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juego de Vocales</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+        }
+        #game-container {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 5px solid #ffd700;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #87ceeb, #ffffff);
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <script>
+            const config = {
+                type: Phaser.AUTO,
+                width: 800,
+                height: 600,
+                parent: 'game-container',
+                scene: {
+                    preload: preload,
+                    create: create,
+                    update: update
+                }
+            };
+
+            let game = new Phaser.Game(config);
+            let score = 0;
+            let timeLeft = 120;
+            let timerText;
+            let scoreText;
+            let randomLetter;
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const vowels = ['A', 'E', 'I', 'O', 'U'];
+
+            function preload() {
+                this.load.image('vowelButton', 'https://examples.phaser.io/assets/buttons/button-round-green.png');
+                this.load.image('notVowelButton', 'https://examples.phaser.io/assets/buttons/button-round-red.png');
+                this.load.image('background', 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?fit=crop&w=800&q=80');
+                this.load.image('cloud', 'https://examples.phaser.io/assets/sprites/cloud.png');
+                this.load.image('sun', 'https://examples.phaser.io/assets/sprites/sun.png');
+            }
+
+            function create() {
+                // Fondo del juego
+                const bg = this.add.image(400, 300, 'background');
+                bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
+
+                // Sol
+                const sun = this.add.image(700, 100, 'sun');
+                sun.setScale(0.5);
+
+                // Nubes flotantes
+                const cloud1 = this.add.image(200, 150, 'cloud');
+                const cloud2 = this.add.image(600, 200, 'cloud');
+                cloud1.setScale(0.6);
+                cloud2.setScale(0.7);
+
+                // Texto de puntuación
+                scoreText = this.add.text(20, 20, 'Puntos: 0', { 
+                    font: '28px Comic Sans MS', 
+                    fill: '#000', 
+                    backgroundColor: '#ffd700', 
+                    padding: { x: 10, y: 5 }, 
+                    borderRadius: 5 
+                });
+
+                // Texto del cronómetro
+                timerText = this.add.text(650, 20, `Tiempo: ${timeLeft}`, { 
+                    font: '28px Comic Sans MS', 
+                    fill: '#000', 
+                    backgroundColor: '#ffd700', 
+                    padding: { x: 10, y: 5 }, 
+                    borderRadius: 5 
+                });
+
+                // Letra aleatoria
+                randomLetter = this.add.text(400, 250, getRandomLetter(), { 
+                    font: '128px Comic Sans MS', 
+                    fill: '#ff69b4', 
+                    stroke: '#ffffff', 
+                    strokeThickness: 8 
+                }).setOrigin(0.5);
+
+                // Botón "Vocal"
+                const vowelButton = this.add.image(250, 450, 'vowelButton').setInteractive();
+                const vowelText = this.add.text(250, 450, 'Vocal', { 
+                    font: '24px Comic Sans MS', 
+                    fill: '#ffffff' 
+                }).setOrigin(0.5);
+
+                // Botón "No Vocal"
+                const notVowelButton = this.add.image(550, 450, 'notVowelButton').setInteractive();
+                const notVowelText = this.add.text(550, 450, 'No Vocal', { 
+                    font: '24px Comic Sans MS', 
+                    fill: '#ffffff' 
+                }).setOrigin(0.5);
+
+                // Eventos de botones
+                vowelButton.on('pointerdown', () => checkAnswer(true));
+                notVowelButton.on('pointerdown', () => checkAnswer(false));
+
+                // Cronómetro
+                this.time.addEvent({
+                    delay: 1000,
+                    callback: updateTimer,
+                    callbackScope: this,
+                    loop: true
+                });
+            }
+
+            function update() {
+                if (timeLeft <= 0) {
+                    this.scene.pause();
+                    this.add.text(400, 300, '¡Tiempo agotado!', { 
+                        font: '48px Comic Sans MS', 
+                        fill: '#ff0000', 
+                        stroke: '#000', 
+                        strokeThickness: 6 
+                    }).setOrigin(0.5);
+                }
+            }
+
+            function getRandomLetter() {
+                return letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+
+            function checkAnswer(isVowel) {
+                const currentLetter = randomLetter.text;
+                const isCurrentVowel = vowels.includes(currentLetter);
+
+                if (isVowel === isCurrentVowel) {
+                    score += 10;
+                } else {
+                    score -= 5;
+                }
+
+                scoreText.setText(`Puntos: ${score}`);
+                randomLetter.setText(getRandomLetter());
+            }
+
+            function updateTimer() {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    timerText.setText(`Tiempo: ${timeLeft}`);
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>
