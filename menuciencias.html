@@ -44,6 +44,21 @@
             font-size: 1em;
         }
 
+        header .user-info button {
+            background-color: #004a99;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+
+        header .user-info button:hover {
+            background-color: #003366;
+        }
+
         .dashboard {
             display: flex;
             flex: 1;
@@ -81,6 +96,30 @@
             background-color: #ffffff;
         }
 
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .progress .item {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 1em;
+        }
+
+        .progress .item span {
+            display: block;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            color: #0073e6;
+        }
+
         .games {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -92,7 +131,6 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
@@ -126,7 +164,7 @@
     <header>
         <div class="title">Seccion de Ciencias</div>
         <div class="user-info">
-            <span>175 puntos</span>
+            <span>100 puntos</span>
             <span>Jose Martinez</span>
             <button>Salir</button>
         </div>
@@ -144,47 +182,59 @@
         </div>
 
         <div class="content">
+            <div class="progress">
+                <div class="item">
+                    <span>1</span>
+                    Juego en progreso
+                </div>
+                <div class="item">
+                    <span>5</span>
+                    Juegos completados
+                </div>
+                <div class="item">
+                    <span>3</span>
+                    Insignias
+                </div>
+                <div class="item">
+                    <span>850</span>
+                    Puntos
+                </div>
+            </div>
+
             <div class="games">
-                <div class="game-card" onclick="redirectTo('huesos.html')">
-                    <img src="SelectMenuImg/Prueba.png" alt="Jugando con huesos">
+                <a href="juegos\Sumasmagicas.html" class="game-card">
+                    <img src="SelectMenuImg/Prueba.png" alt="Sumas Magicas">
                     <div class="game-info">
                         <h3>Jugando con huesos</h3>
                         <p>Aprende los huesos del cuerpo humano conectándolos por su nombre.</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="game-card" onclick="redirectTo('espacio.html')">
-                    <img src="SelectMenuImg/Prueba2.png" alt="Viajando al espacio">
+                <a href="Restasespaciales.html" class="game-card">
+                    <img src="SelectMenuImg/Prueba2.png" alt="Restas Espaciales">
                     <div class="game-info">
                         <h3>Viajando al espacio</h3>
                         <p>Esta vez volaremos hacia el espacio y veremos nuestro sistema solar para aprender de él.</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="game-card" onclick="redirectTo('juegos/memoramaciencias.html')">
-                    <img src="SelectMenuImg/Prueba3.png" alt="Aprendiendo con animales">
+                <a href="juegos/multiplicacionestristes.html" class="game-card">
+                    <img src="SelectMenuImg/Prueba3.png" alt="Multiplicaciones tristes">
                     <div class="game-info">
-                        <h3>pares de ciencia</h3>
+                        <h3>Pares de ciencia</h3>
                         <p>Junta cada cosa con su pareja.</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="game-card" onclick="redirectTo('proximamente.html')">
-                    <img src="SelectMenuImg/Prueba4.png" alt="Proximamente">
+                <a href="juegos/divisionesdivertidas.html" class="game-card">
+                    <img src="SelectMenuImg/Prueba4.png" alt="Divisiones divertidas">
                     <div class="game-info">
                         <h3>Próximamente</h3>
                         <p>Espera el siguiente desafío.</p>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
-
-    <script>
-        // Función que redirige a otra página
-        function redirectTo(url) {
-            window.location.href = url;
-        }
-    </script>
 </body>
 </html>
