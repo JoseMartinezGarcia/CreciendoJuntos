@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restas Espaciales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('Fondos/Alien.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .alien {
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .alien img {
+            width: 150px;
+            height: auto;
+            animation: float 2s infinite;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        .game {
+            margin-top: 50px;
+        }
+        .question {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .input-answer {
+            padding: 10px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .score {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        .timer {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Restas Espaciales</h1>
+    <p>¡Los alienígenas quieren robar los números! Ayuda al mundo resolviendo las restas.</p>
+
+    <div class="game">
+        <div class="alien">
+            <img src="GamesImg/Alien.png" alt="Alien">
+        </div>
+
+        <div class="question" id="question">¿Cuánto es 10 - 5?</div>
+        <input type="number" id="answer" class="input-answer" placeholder="Escribe tu respuesta">
+        <button class="button" onclick="checkAnswer()">Responder</button>
+
+        <div id="message"></div>
+        <div class="score" id="score">Puntos: 0</div>
+        <div class="timer" id="timer">Tiempo: 0 segundos</div>
+        <button class="button" onclick="resetGame()">Reiniciar Juego</button>
+    </div>
+
+    <script>
+        const questionElement = document.getElementById('question');
+        const answerInput = document.getElementById('answer');
+        const messageElement = document.getElementById('message');
+        const scoreElement = document.getElementById('score');
+        const timerElement = document.getElementById('timer');
+
+        let currentQuestion = {};
+        let score = 0;
+        let timer = 0;
+        let timerInterval;
+
+        // Genera una nueva pregunta
+        function generateQuestion() {
+            const num1 = Math.floor(Math.random() * 20) + 1;
+            const num2 = Math.floor(Math.random() * num1); // Asegura que el resultado sea positivo
+            currentQuestion = { num1, num2, answer: num1 - num2 };
+            questionElement.textContent = `¿Cuánto es ${num1} - ${num2}?`;
+        }
+
+        // Verifica la respuesta del jugador
+        function checkAnswer() {
+            const userAnswer = parseInt(answerInput.value);
+            if (userAnswer === currentQuestion.answer) {
+                score++;
+                scoreElement.textContent = `Puntos: ${score}`;
+                messageElement.textContent = '¡Correcto! ¡Has salvado un número!';
+                messageElement.style.color = 'lightgreen';
+                generateQuestion();
+                answerInput.value = '';
+
+                if (score === 10) {
+                    clearInterval(timerInterval);
+                    messageElement.textContent = `¡Felicidades! Llegaste a 10 puntos en ${timer} segundos.`;
+                }
+            } else {
+                messageElement.textContent = '¡Incorrecto! Inténtalo de nuevo.';
+                messageElement.style.color = 'red';
+            }
+        }
+
+        // Inicializa el juego
+        function startGame() {
+            score = 0;
+            timer = 0;
+            scoreElement.textContent = `Puntos: ${score}`;
+            timerElement.textContent = `Tiempo: ${timer} segundos`;
+            messageElement.textContent = '';
+            generateQuestion();
+            timerInterval = setInterval(() => {
+                timer++;
+                timerElement.textContent = `Tiempo: ${timer} segundos`;
+            }, 1000);
+        }
+
+        // Reinicia el juego
+        function resetGame() {
+            clearInterval(timerInterval);
+            startGame();
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
