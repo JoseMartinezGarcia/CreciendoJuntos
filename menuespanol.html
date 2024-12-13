@@ -44,10 +44,80 @@
             font-size: 1em;
         }
 
+        header .user-info button {
+            background-color: #004a99;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+
+        header .user-info button:hover {
+            background-color: #003366;
+        }
+
+        .dashboard {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #0073e6;
+            font-size: 1em;
+            transition: color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            color: #004a99;
+        }
+
         .content {
             flex: 1;
             padding: 30px;
             background-color: #ffffff;
+        }
+
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .progress .item {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 1em;
+        }
+
+        .progress .item span {
+            display: block;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            color: #0073e6;
         }
 
         .games {
@@ -61,7 +131,6 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer; /* Cambiar cursor para indicar que es clickeable */
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
@@ -93,7 +162,7 @@
 </head>
 <body>
     <header>
-        <div class="title">Seccion de Español</div>
+        <div class="title">Seccion de Espanol</div>
         <div class="user-info">
             <span>175 puntos</span>
             <span>Jose Martinez</span>
@@ -101,48 +170,71 @@
         </div>
     </header>
 
-    <div class="content">
-        <h2>Juegos Disponibles</h2>
-        <div class="games">
-            <div class="game-card" onclick="redirectTo('juegosalfabeto original.html')">
-                <img src="SelectMenuImg/Prueba.png" alt="Conecta abecedario">
-                <div class="game-info">
-                    <h3>¿Qué vocal es?</h3>
-                    <p>Adivina la vocal.</p>
+    <div class="dashboard">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">Catálogo de Juegos</a></li>
+                <li><a href="#">Progreso</a></li>
+                <li><a href="#">Grupos</a></li>
+                <li><a href="#">Discusión</a></li>
+                <li><a href="#">Calendario</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <div class="progress">
+                <div class="item">
+                    <span>1</span>
+                    Juego en progreso
+                </div>
+                <div class="item">
+                    <span>5</span>
+                    Juegos completados
+                </div>
+                <div class="item">
+                    <span>3</span>
+                    Insignias
+                </div>
+                <div class="item">
+                    <span>850</span>
+                    Puntos
                 </div>
             </div>
 
-            <div class="game-card" onclick="redirectTo('letras.html')">
-                <img src="SelectMenuImg/Prueba2.png" alt="Qué letra es">
-                <div class="game-info">
-                    <h3>¿Qué letra es?</h3>
-                    <p>Eres el mejor descubriendo qué letra es.</p>
-                </div>
-            </div>
+            <div class="games">
+                <a href="juegos/alfabeto original.html" class="game-card">
+                    <img src="SelectMenuImg/Prueba.png" alt="Que vocal es">
+                    <div class="game-info">
+                        <h3>¿Qué vocal es?</h3>
+                        <p>Adivina la vocal.</p>
+                    </div>
+                </a>
 
-            <div class="game-card" onclick="redirectTo('juegos/alfabeto original.html')">
-                <img src="SelectMenuImg/Prueba3.png" alt="Vocales divertidas">
-                <div class="game-info">
-                    <h3>Vocales divertidas</h3>
-                    <p>Adivina la vocal.</p>
-                </div>
-            </div>
+                <a href="letras.html" class="game-card">
+                    <img src="SelectMenuImg/Prueba2.png" alt="Restas Espaciales">
+                    <div class="game-info">
+                        <h3>¿Qué letra es?</h3>
+                        <p>Eres el mejor descubriendo qué letra es.</p>
+                    </div>
+                </a>
 
-            <div class="game-card" onclick="redirectTo('proximamente.html')">
-                <img src="SelectMenuImg/Prueba4.png" alt="Proximamente">
-                <div class="game-info">
-                    <h3>Próximamente</h3>
-                    <p>Espera el siguiente desafío.</p>
-                </div>
+                <a href="juegos/alfabeto original.html" class="game-card">
+                    <img src="SelectMenuImg/Prueba3.png" alt="alfabeto">
+                    <div class="game-info">
+                        <h3>Vocales divertidas</h3>
+                        <p>Adivina la vocal.</p>
+                    </div>
+                </a>
+
+                <a href="juegos/divissdivertidas.html" class="game-card">
+                    <img src="SelectMenuImg/Prueba4.png" alt="Proximamente">
+                    <div class="game-info">
+                        <h3>Proximamente</h3>
+                        <p>Espera nuevas aventuras.</p>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
-
-    <script>
-        // Función para redirigir a otra página
-        function redirectTo(url) {
-            window.location.href = url;
-        }
-    </script>
 </body>
 </html>

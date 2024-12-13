@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Identificar Letras</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8e6f2;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+        }
+        #game-container {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 5px solid #ffb6c1;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #ffe4e1, #ffffff);
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <script>
+            const config = {
+                type: Phaser.AUTO,
+                width: 800,
+                height: 600,
+                parent: 'game-container',
+                scene: {
+                    preload: preload,
+                    create: create,
+                    update: update
+                }
+            };
+
+            let game = new Phaser.Game(config);
+            let score = 0;
+            let timeLeft = 120; // 60 segundos para el cronómetro
+            let currentLetter;
+            let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let scoreText;
+            let timerText;
+
+            function preload() {
+                this.load.image('background', 'https://images.unsplash.com/photo-1529655683826-aba9b3e77383?fit=crop&w=800&q=80');
+            }
+
+            function create() {
+                // Fondo
+                const bg = this.add.image(400, 300, 'background');
+                bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
+
+                // Texto de instrucciones
+                this.add.text(400, 50, '¿Qué letra ves aquí?', {
+                    font: '32px Comic Sans MS',
+                    fill: '#ff69b4'
+                }).setOrigin(0.5);
+
+                // Generar letra aleatoria
+                currentLetter = getRandomLetter();
+                const letterDisplay = this.add.text(400, 200, currentLetter, {
+                    font: '128px Comic Sans MS',
+                    fill: '#ffffff',
+                    stroke: '#ff69b4',
+                    strokeThickness: 8
+                }).setOrigin(0.5);
+
+                // Bloques para ingresar respuesta
+                createLetterBlocks(this);
+
+                // Puntaje
+                scoreText = this.add.text(20, 20, `Puntos: ${score}`, {
+                    font: '28px Comic Sans MS',
+                    fill: '#000',
+                    backgroundColor: '#fff',
+                    padding: { x: 10, y: 5 },
+                    borderRadius: 5
+                });
+
+                // Cronómetro
+                timerText = this.add.text(650, 20, `Tiempo: ${timeLeft}`, {
+                    font: '28px Comic Sans MS',
+                    fill: '#000',
+                    backgroundColor: '#fff',
+                    padding: { x: 10, y: 5 },
+                    borderRadius: 5
+                });
+
+                this.time.addEvent({
+                    delay: 1000,
+                    callback: updateTimer,
+                    callbackScope: this,
+                    loop: true
+                });
+            }
+
+            function update() {}
+
+            function getRandomLetter() {
+                return letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+
+            function createLetterBlocks(scene) {
+                const shuffledLetters = Phaser.Utils.Array.Shuffle(letters.split('')).slice(0, 5);
+                shuffledLetters.push(currentLetter);
+                Phaser.Utils.Array.Shuffle(shuffledLetters);
+
+                const centerX = scene.sys.game.config.width / 2;
+                const centerY = scene.sys.game.config.height / 2 + 100;
+                const blockSpacing = 120;
+                const startX = centerX - (blockSpacing * (shuffledLetters.length - 1)) / 2;
+
+                shuffledLetters.forEach((letter, index) => {
+                    const x = startX + index * blockSpacing;
+                    const block = scene.add.rectangle(x, centerY, 100, 100, 0xffc0cb).setInteractive();
+                    const blockText = scene.add.text(x, centerY, letter, {
+                        font: '36px Comic Sans MS',
+                        fill: '#000'
+                    }).setOrigin(0.5);
+
+                    block.on('pointerdown', () => checkAnswer(letter, scene));
+                });
+            }
+
+            function checkAnswer(selectedLetter, scene) {
+                if (selectedLetter === currentLetter) {
+                    score += 10;
+                    currentLetter = getRandomLetter();
+                    resetScene(scene);
+                } else {
+                    score -= 5;
+                }
+
+                scoreText.setText(`Puntos: ${score}`);
+            }
+
+            function resetScene(scene) {
+                scene.children.removeAll();
+                create.call(scene);
+            }
+
+            function updateTimer() {
+                timeLeft--;
+                timerText.setText(`Tiempo: ${timeLeft}`);
+
+                if (timeLeft <= 0) {
+                    this.scene.pause();
+                    this.add.text(400, 300, '¡Tiempo terminado!', {
+                        font: '48px Comic Sans MS',
+                        fill: '#ff0000'
+                    }).setOrigin(0.5);
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>
