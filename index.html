@@ -135,7 +135,16 @@
             </div>
         </div>
     </div>
-
+    <!-- Ventana emergente para los cuentos -->
+    <div id="popup-cuentos" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2>Cuentos</h2>
+            <ul id="lista-cuentos">
+                <!-- Los cuentos se cargarán aquí -->
+            </ul>
+        </div>
+    </div>
     <footer>
         &copy; 2024 Stotte. Todos los derechos reservados.
     </footer>
@@ -167,6 +176,47 @@
             signInWithPopup(auth, provider)
                 .then(result => alert(`¡Bienvenido, ${result.user.displayName}!`))
                 .catch(error => alert(`Error: ${error.message}`));
+        });
+        // Función para abrir el popup de cuentos
+        const cuentosButton = document.getElementById('cuentos-button');
+        const popupCuentos = document.getElementById('popup-cuentos');
+        const closeButton = document.querySelector('.close');
+        const listaCuentos = document.getElementById('lista-cuentos');
+
+        // Lista de cuentos disponibles en la carpeta "Cuentos"
+        const cuentos = [
+            "cuento cuarto grado.html",
+            "cuento de quinto grado.html",
+            "cuento primer grado.html",
+            "cuento segundo grado.html",
+            "cuento sexto grado.html",
+            "Cuento tercer grado.html"
+        ];
+
+        // Función para cargar los cuentos en el popup
+        function cargarCuentos() {
+            listaCuentos.innerHTML = ''; // Limpiar lista antes de agregar cuentos
+
+            cuentos.forEach(cuento => {
+                const li = document.createElement('li');
+                li.textContent = cuento.replace('.html', ''); // Mostrar sin la extensión
+                li.addEventListener('click', () => {
+                    window.location.href = `Cuentos/${cuento}`; // Redirigir al archivo del cuento
+                });
+                listaCuentos.appendChild(li);
+            });
+        }
+
+
+    // Abrir el popup de cuentos
+        cuentosButton.addEventListener('click', () => {
+            popupCuentos.style.display = 'flex';
+            cargarCuentos(); // Cargar los cuentos al abrir el popup
+        });
+
+        // Cerrar el popup
+        closeButton.addEventListener('click', () => {
+            popupCuentos.style.display = 'none';
         });
     </script>
 </body>
