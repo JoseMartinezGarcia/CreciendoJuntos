@@ -35,6 +35,7 @@
             color: white;
             text-decoration: none;
             font-weight: bold;
+            cursor: pointer; /* Hace que el enlace parezca un botón */
         }
 
         .main-container {
@@ -78,16 +79,6 @@
             object-fit: cover;
         }
 
-        .category p {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-weight: bold;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-        }
-
         footer {
             background-color: #008080;
             color: white;
@@ -97,26 +88,14 @@
             bottom: 0;
             width: 100%;
         }
-
-        /* Botón de Google */
-        #google-login {
-            background-color: #4285F4;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
     <header>
         <img src="LogosF/LogoStotte.png" alt="Logo">
         <nav>
-            <a href="login.html">Iniciar sesión</a>
-            <a href="#">Suscribirse</a>
+            <!-- Botón de inicio de sesión -->
+            <a id="google-login" href="#">Iniciar sesión</a>
         </nav>
     </header>
 
@@ -152,9 +131,6 @@
                 </a>
             </div>
         </div>
-
-        <!-- Botón para iniciar sesión con Google -->
-        <button id="google-login">Iniciar sesión con Google</button>
     </div>
 
     <footer>
@@ -180,21 +156,14 @@
         // Inicializar Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth();
-        const provider = new GoogleAuthProvider();
 
-        // Funcionalidad para iniciar sesión con Google
-        const googleLoginButton = document.getElementById('google-login');
-        googleLoginButton.addEventListener('click', () => {
+        // Funcionalidad de inicio de sesión con Google
+        document.getElementById('google-login').addEventListener('click', (e) => {
+            e.preventDefault();
+            const provider = new GoogleAuthProvider();
             signInWithPopup(auth, provider)
-                .then((result) => {
-                    const user = result.user;
-                    alert(`¡Bienvenido, ${user.displayName}!`);
-                    console.log('Usuario autenticado:', user);
-                })
-                .catch((error) => {
-                    console.error('Error al iniciar sesión:', error);
-                    alert('Error al iniciar sesión con Google. Inténtalo de nuevo.');
-                });
+                .then(result => alert(`¡Bienvenido, ${result.user.displayName}!`))
+                .catch(error => alert(`Error: ${error.message}`));
         });
     </script>
 </body>
